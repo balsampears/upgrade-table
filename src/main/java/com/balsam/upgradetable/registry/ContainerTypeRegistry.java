@@ -15,7 +15,7 @@ public class ContainerTypeRegistry {
 
     public static final DeferredRegister<ContainerType<?>> CONTAINERS = DeferredRegister.create(ForgeRegistries.CONTAINERS, Constants.MOD_ID);
 
-    public static final RegistryObject<ContainerType<UpgradeTableContainer>> UpgradeTableContainer = CONTAINERS.register("obsidian_first_container",
+    public static final RegistryObject<ContainerType<UpgradeTableContainer>> UpgradeTableContainer = CONTAINERS.register("upgrade_table_container",
             () -> IForgeContainerType.create((int windowId, PlayerInventory inv, PacketBuffer data) -> new UpgradeTableContainer(windowId,
                     Minecraft.getInstance().level, data.readBlockPos(), inv)));
 }

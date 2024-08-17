@@ -1,6 +1,7 @@
 package com.balsam.upgradetable.block;
 
 import com.balsam.upgradetable.config.Constants;
+import com.balsam.upgradetable.mod.ModCapability;
 import com.balsam.upgradetable.network.Networking;
 import com.balsam.upgradetable.network.pack.UpgradeButtonPack;
 import com.balsam.upgradetable.util.Logger;
@@ -9,6 +10,8 @@ import net.minecraft.client.gui.screen.inventory.ContainerScreen;
 import net.minecraft.client.gui.widget.Widget;
 import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.inventory.Inventory;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
@@ -32,7 +35,12 @@ public class UpgradeTableScreen extends ContainerScreen<UpgradeTableContainer> {
         //渲染组件，坐标从上面方法的x,y开始算
         this.upgradeButton = new Button(this.leftPos + 46, this.topPos + 36, 22, 14,
                 new TranslationTextComponent(String.format("button.%s.upgrade", Constants.MOD_ID)), (button) -> {
-            Networking.INSTANCE.sendToServer(new UpgradeButtonPack("你好，点击了按钮"));
+            Inventory inventory = this.menu.blockEntity.getInventory();
+            ItemStack itemStack = inventory.getItem(1);
+            if (itemStack.isEmpty()) return;
+            itemStack.getCapability(ModCapability.Level).ifPresent(o->{
+                Networking.INSTANCE.sendToServer(new UpgradeButtonPack(o.serializeNBT()));
+            });
         });
         this.buttons.add(upgradeButton);
     }

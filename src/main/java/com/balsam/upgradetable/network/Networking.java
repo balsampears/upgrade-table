@@ -29,9 +29,7 @@ public class Networking {
         INSTANCE.messageBuilder(UpgradeButtonPack.class, nextId())
                 .encoder((upgradeButtonPack, buffer) -> upgradeButtonPack.encode(buffer))
                 .decoder(buffer -> new UpgradeButtonPack(buffer))
-                .consumer((upgradeButtonPack, supplier) -> {
-                    upgradeButtonPack.handle(supplier.get());
-                }).add();
+                .consumer(UpgradeButtonPack::handle).add();
     }
 
 

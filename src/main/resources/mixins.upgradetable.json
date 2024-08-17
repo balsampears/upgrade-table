@@ -4,7 +4,7 @@
   "compatibilityLevel": "JAVA_8",
   "refmap": "mixins.upgradetable.refmap.json",
   "mixins": [
-    "MixSwordItem"
+    "MixinItem"
   ],
   "minVersion": "0.8"
 }

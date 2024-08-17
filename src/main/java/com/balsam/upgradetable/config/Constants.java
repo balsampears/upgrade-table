@@ -4,4 +4,5 @@ public interface Constants {
 
     String MOD_ID = "upgradetable";
 
+    int MAX_LEVEL = 16;
 }
