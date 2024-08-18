@@ -1,29 +1,42 @@
 package com.balsam.upgradetable.block;
 
-import com.balsam.upgradetable.capability.IItemLevel;
+import com.balsam.upgradetable.capability.BaseItemAbility;
+import com.balsam.upgradetable.capability.IItemAbility;
+import com.balsam.upgradetable.capability.SwordItemAbility;
 import com.balsam.upgradetable.config.Constants;
 import com.balsam.upgradetable.mod.ModCapability;
 import com.balsam.upgradetable.network.Networking;
 import com.balsam.upgradetable.network.pack.UpgradeButtonPack;
+import com.balsam.upgradetable.registry.ItemRegistry;
 import com.balsam.upgradetable.registry.TileEntityTypeRegistry;
 import com.balsam.upgradetable.util.Logger;
+import com.google.common.collect.ImmutableMultimap;
 import com.google.gson.Gson;
+import net.minecraft.entity.ai.attributes.Attribute;
+import net.minecraft.entity.ai.attributes.AttributeModifier;
+import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.INamedContainerProvider;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.SwordItem;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fml.network.PacketDistributor;
+import net.minecraftforge.registries.ForgeRegistries;
 
 import javax.annotation.Nullable;
+
+import static net.minecraft.item.Item.BASE_ATTACK_DAMAGE_UUID;
 
 public class UpgradeTableTileEntity extends TileEntity implements INamedContainerProvider {
 
@@ -51,25 +64,30 @@ public class UpgradeTableTileEntity extends TileEntity implements INamedContaine
     public void upgrade() {
         ItemStack itemStack = inventory.getItem(1);
         if (itemStack.isEmpty()) return;
-//        CompoundNBT tag = itemStack.getOrCreateTag();
-//        int currentLevel = tag.getInt("currentLevel");
-//        tag.putInt("currentLevel", ++currentLevel);
-//        itemStack.save(tag);
 
-        LazyOptional<IItemLevel> levelOption = itemStack.getCapability(ModCapability.Level);
-        levelOption.ifPresent(iItemLevel -> {
+        LazyOptional<IItemAbility> levelOption = itemStack.getCapability(ModCapability.Level);
+        levelOption.ifPresent(o -> {
+            BaseItemAbility baseItemAbility = (BaseItemAbility) o;
             //升级
-            int level = iItemLevel.getLevel();
-            int maxLevel = iItemLevel.getMaxLevel();
-            level = Math.min(level + 1, maxLevel);
-            iItemLevel.setLevel(level);
-            Logger.info(String.format("%s当前等级为：%d/%d", iItemLevel.hashCode(), level, maxLevel));
-            //更新服务端stack
-//            ItemStack copy = itemStack.copy();
-//            inventory.setItem(1, copy);
-            iItemLevel.deserializeNBT(iItemLevel.serializeNBT());
+            baseItemAbility.getTotal().upgrade();
+            Logger.info(String.format("当前总等级为：%d/%d", baseItemAbility.getTotal().getLevel(), baseItemAbility.getTotal().getMaxLevel()));
+            if (o instanceof SwordItemAbility){
+                SwordItemAbility swordItemAbility = (SwordItemAbility) o;
+                swordItemAbility.getAttack().upgrade();
+                //todo 后续需要改为itemstack属性来增加伤害
+                SwordItem sword = (SwordItem)itemStack.getItem();
+                sword.attackDamage = sword.attackDamage + (int)swordItemAbility.getAttack().getValue();
+                //重新更新提示信息
+                AttributeModifier speedMod = sword.defaultModifiers.get(Attributes.ATTACK_SPEED).stream().findFirst().orElse(null);
+                double speed = speedMod.getAmount();
+                ImmutableMultimap.Builder<Attribute, AttributeModifier> builder = ImmutableMultimap.builder();
+                builder.put(Attributes.ATTACK_DAMAGE, new AttributeModifier(Item.BASE_ATTACK_DAMAGE_UUID, "Weapon modifier", (double)sword.attackDamage, AttributeModifier.Operation.ADDITION));
+                builder.put(Attributes.ATTACK_SPEED, new AttributeModifier(Item.BASE_ATTACK_SPEED_UUID, "Weapon modifier", (double)speed, AttributeModifier.Operation.ADDITION));
+                sword.defaultModifiers = builder.build();
+            }
+
             //通知客户端更新
-            Networking.INSTANCE.send(PacketDistributor.ALL.noArg(), new UpgradeButtonPack(iItemLevel.serializeNBT()));
+//            Networking.INSTANCE.send(PacketDistributor.ALL.noArg(), new UpgradeButtonPack(o.serializeNBT()));
         });
     }
 

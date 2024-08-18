@@ -1,11 +1,10 @@
 package com.balsam.upgradetable.mod;
 
-import com.balsam.upgradetable.capability.IItemLevel;
+import com.balsam.upgradetable.capability.IItemAbility;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityInject;
-import net.minecraftforge.items.IItemHandler;
 
 public class ModCapability {
-    @CapabilityInject(IItemLevel.class)
-    public static Capability<IItemLevel> Level;
+    @CapabilityInject(IItemAbility.class)
+    public static Capability<IItemAbility> Level;
 }

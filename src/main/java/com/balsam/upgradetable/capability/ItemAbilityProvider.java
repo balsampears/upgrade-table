@@ -15,16 +15,20 @@ import javax.annotation.Nullable;
 /**
  * 将能力与物品关联
  */
-public class ItemLevelProvider implements ICapabilitySerializable<CompoundNBT>, ICapabilityProvider {
+public class ItemAbilityProvider implements ICapabilitySerializable<CompoundNBT>, ICapabilityProvider {
 
-    private IItemLevel level = new ItemLevel(Constants.MAX_LEVEL);
+    private IItemAbility itemAbility;
 //    private Capability.IStorage<IItemLevel> levelIStorage = CapabilityRegistry.Level.getStorage();
+
+    public ItemAbilityProvider(IItemAbility iItemAbility) {
+        this.itemAbility = iItemAbility;
+    }
 
     @Nonnull
     @Override
     public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
         if (ModCapability.Level.equals(cap)){
-            return LazyOptional.of(()->level).cast();
+            return LazyOptional.of(()-> itemAbility).cast();
         }
         return LazyOptional.empty();
     }
@@ -32,14 +36,14 @@ public class ItemLevelProvider implements ICapabilitySerializable<CompoundNBT>, 
     @Override
     public CompoundNBT serializeNBT() {
         CompoundNBT compoundNBT = new CompoundNBT();
-        compoundNBT.put("upgrade", level.serializeNBT());
+        compoundNBT.put("upgrade", itemAbility.serializeNBT());
         return compoundNBT;
     }
 
     @Override
     public void deserializeNBT(CompoundNBT nbt) {
         CompoundNBT compoundNBT = (CompoundNBT) nbt.get("upgrade");
-        level.deserializeNBT(compoundNBT);
+        itemAbility.deserializeNBT(compoundNBT);
     }
 
 }

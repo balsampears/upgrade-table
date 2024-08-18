@@ -1,7 +1,7 @@
 package com.balsam.upgradetable;
 
 import com.balsam.upgradetable.block.UpgradeTableScreen;
-import com.balsam.upgradetable.capability.IItemLevel;
+import com.balsam.upgradetable.capability.IItemAbility;
 import com.balsam.upgradetable.network.Networking;
 import com.balsam.upgradetable.registry.ContainerTypeRegistry;
 import net.minecraft.client.gui.ScreenManager;
@@ -35,15 +35,15 @@ public class ModBusEventHandler {
     public static void onFMLCommonSetupEvent(FMLCommonSetupEvent event) {
         event.enqueueWork(() -> {
             Networking.registryMessage();
-            CapabilityManager.INSTANCE.register(IItemLevel.class, new Capability.IStorage<IItemLevel>() {
+            CapabilityManager.INSTANCE.register(IItemAbility.class, new Capability.IStorage<IItemAbility>() {
                 @Nullable
                 @Override
-                public INBT writeNBT(Capability<IItemLevel> capability, IItemLevel instance, Direction side) {
+                public INBT writeNBT(Capability<IItemAbility> capability, IItemAbility instance, Direction side) {
                     return null;
                 }
 
                 @Override
-                public void readNBT(Capability<IItemLevel> capability, IItemLevel instance, Direction side, INBT nbt) {
+                public void readNBT(Capability<IItemAbility> capability, IItemAbility instance, Direction side, INBT nbt) {
 
                 }
             }, () -> null);
