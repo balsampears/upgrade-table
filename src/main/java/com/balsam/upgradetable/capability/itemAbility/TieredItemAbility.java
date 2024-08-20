@@ -1,15 +1,15 @@
-package com.balsam.upgradetable.capability;
+package com.balsam.upgradetable.capability.itemAbility;
 
 import com.balsam.upgradetable.capability.pojo.ItemLevelPO;
 import com.balsam.upgradetable.config.Constants;
 import net.minecraft.nbt.CompoundNBT;
 
-public class SwordItemAbility extends BaseItemAbility{
+public class TieredItemAbility extends BaseItemAbility{
 
     private ItemLevelPO attack;
     private ItemLevelPO attackSpeed;
 
-    public SwordItemAbility() {
+    public TieredItemAbility() {
         super(Constants.MAX_LEVEL_TOTAL, Constants.MAX_LEVEL_PER_ABILITY);
         this.attack = new ItemLevelPO(Constants.MAX_LEVEL_PER_ABILITY, 1f);
         this.attackSpeed = new ItemLevelPO(Constants.MAX_LEVEL_PER_ABILITY, 0.1f);

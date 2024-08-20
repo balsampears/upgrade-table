@@ -1,4 +1,4 @@
-package com.balsam.upgradetable.capability;
+package com.balsam.upgradetable.capability.itemAbility;
 
 import com.balsam.upgradetable.capability.pojo.ItemLevelPO;
 import net.minecraft.nbt.CompoundNBT;

@@ -1,4 +1,4 @@
-package com.balsam.upgradetable.capability;
+package com.balsam.upgradetable.capability.itemAbility;
 
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraftforge.common.util.INBTSerializable;

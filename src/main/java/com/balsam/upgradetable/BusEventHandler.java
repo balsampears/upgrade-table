@@ -1,11 +1,11 @@
 package com.balsam.upgradetable;
 
 import com.balsam.upgradetable.capability.ItemAbilityProvider;
-import com.balsam.upgradetable.capability.SwordItemAbility;
+import com.balsam.upgradetable.capability.itemAbility.TieredItemAbility;
 import com.balsam.upgradetable.config.Constants;
 import com.balsam.upgradetable.util.Logger;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.SwordItem;
+import net.minecraft.item.TieredItem;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -16,10 +16,11 @@ public class BusEventHandler {
     @SubscribeEvent
     public static void onAttachCapabilitiesEvent(AttachCapabilitiesEvent<ItemStack> event) {
         ItemStack object = event.getObject();
-        if (object.getItem() instanceof SwordItem) {
+        if (object.getItem() instanceof TieredItem) {
             event.addCapability(new ResourceLocation(String.format("cap.%s.upgrade", Constants.MOD_ID)),
-                    new ItemAbilityProvider(new SwordItemAbility()));
+                    new ItemAbilityProvider(new TieredItemAbility()));
             Logger.info(String.format("物品%s使用'升级'的能力",object.getItem().getRegistryName().toString()));
         }
     }
+
 }

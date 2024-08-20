@@ -4,10 +4,8 @@ import com.balsam.upgradetable.config.Constants;
 import com.balsam.upgradetable.mod.ModCapability;
 import com.balsam.upgradetable.network.Networking;
 import com.balsam.upgradetable.network.pack.UpgradeButtonPack;
-import com.balsam.upgradetable.util.Logger;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import net.minecraft.client.gui.screen.inventory.ContainerScreen;
-import net.minecraft.client.gui.widget.Widget;
 import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventory;
@@ -38,7 +36,7 @@ public class UpgradeTableScreen extends ContainerScreen<UpgradeTableContainer> {
             Inventory inventory = this.menu.blockEntity.getInventory();
             ItemStack itemStack = inventory.getItem(1);
             if (itemStack.isEmpty()) return;
-            itemStack.getCapability(ModCapability.Level).ifPresent(o->{
+            itemStack.getCapability(ModCapability.itemAbility).ifPresent(o->{
                 Networking.INSTANCE.sendToServer(new UpgradeButtonPack(o.serializeNBT()));
             });
         });

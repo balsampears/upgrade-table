@@ -1,6 +1,6 @@
 package com.balsam.upgradetable.capability;
 
-import com.balsam.upgradetable.config.Constants;
+import com.balsam.upgradetable.capability.itemAbility.IItemAbility;
 import com.balsam.upgradetable.mod.ModCapability;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.Direction;
@@ -27,7 +27,7 @@ public class ItemAbilityProvider implements ICapabilitySerializable<CompoundNBT>
     @Nonnull
     @Override
     public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
-        if (ModCapability.Level.equals(cap)){
+        if (ModCapability.itemAbility.equals(cap)){
             return LazyOptional.of(()-> itemAbility).cast();
         }
         return LazyOptional.empty();

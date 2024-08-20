@@ -4,7 +4,9 @@
   "compatibilityLevel": "JAVA_8",
   "refmap": "mixins.upgradetable.refmap.json",
   "mixins": [
-    "MixinItem"
+    "MixinAttributeModifierManager",
+    "MixinLivingEntity",
+    "MixinItemStack"
   ],
   "minVersion": "0.8"
 }

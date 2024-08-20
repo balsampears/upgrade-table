@@ -1,10 +1,8 @@
 package com.balsam.upgradetable;
 
 import com.balsam.upgradetable.config.Constants;
-import com.balsam.upgradetable.registry.BlockRegistry;
-import com.balsam.upgradetable.registry.ContainerTypeRegistry;
-import com.balsam.upgradetable.registry.ItemRegistry;
-import com.balsam.upgradetable.registry.TileEntityTypeRegistry;
+import com.balsam.upgradetable.registry.*;
+import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
@@ -12,9 +10,11 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 public class Main {
 
     public Main(){
-        ItemRegistry.ITEMS.register(FMLJavaModLoadingContext.get().getModEventBus());
-        BlockRegistry.BLOCKS.register(FMLJavaModLoadingContext.get().getModEventBus());
-        TileEntityTypeRegistry.TILE_ENTITIES.register(FMLJavaModLoadingContext.get().getModEventBus());
-        ContainerTypeRegistry.CONTAINERS.register(FMLJavaModLoadingContext.get().getModEventBus());
+        IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
+        ItemRegistry.ITEMS.register(bus);
+        BlockRegistry.BLOCKS.register(bus);
+        TileEntityTypeRegistry.TILE_ENTITIES.register(bus);
+        ContainerTypeRegistry.CONTAINERS.register(bus);
+        AttributeRegistry.ATTRIBUTES.register(bus);
     }
 }

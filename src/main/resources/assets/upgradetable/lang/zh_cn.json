@@ -1,4 +1,7 @@
 {
   "gui.upgradetable.upgradetable": "升级台",
-  "button.upgradetable.upgrade": "升级"
+  "button.upgradetable.upgrade": "升级",
+  "attribute.name.upgrade.attack_damage": "额外攻击伤害",
+  "attribute.name.upgrade.attack_speed": "额外攻击速度",
+  "attribute.name.upgrade.max_duration": "最大耐久度"
 }

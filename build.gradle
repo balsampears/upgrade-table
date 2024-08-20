@@ -3,6 +3,7 @@ plugins {
     id 'idea'
     id 'maven-publish'
     id 'net.minecraftforge.gradle' version '[6.0,6.2)'
+    id 'org.spongepowered.mixin' version '0.7.+'
     }
 
 version = mod_version
@@ -119,6 +120,7 @@ dependencies {
     // If the group id is "net.minecraft" and the artifact id is one of ["client", "server", "joined"],
     // then special handling is done to allow a setup of a vanilla dependency without the use of an external repository.
     minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
+    annotationProcessor 'org.spongepowered:mixin:0.8.4:processor'
 
     // Real mod deobf dependency examples - these get remapped to your current mappings
     // compileOnly fg.deobf("mezz.jei:jei-${mc_version}:${jei_version}:api") // Adds JEI API as a compile dependency
@@ -188,6 +190,20 @@ publishing {
             url "file://${project.projectDir}/mcmodsrepo"
         }
     }
+}
+
+mixin {
+    add sourceSets.main, "mixins.upgradetable.refmap.json"
+    config 'mixins.upgradetable.json'
+
+    // Specify options for dev run configs
+    debug.verbose = true
+    debug.export = true
+    dumpTargetOnFailure = true
+
+    // Options for the Annotation Processor
+    quiet
+
 }
 
 tasks.withType(JavaCompile).configureEach {

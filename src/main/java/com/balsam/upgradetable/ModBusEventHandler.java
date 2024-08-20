@@ -1,7 +1,7 @@
 package com.balsam.upgradetable;
 
 import com.balsam.upgradetable.block.UpgradeTableScreen;
-import com.balsam.upgradetable.capability.IItemAbility;
+import com.balsam.upgradetable.capability.itemAbility.IItemAbility;
 import com.balsam.upgradetable.network.Networking;
 import com.balsam.upgradetable.registry.ContainerTypeRegistry;
 import net.minecraft.client.gui.ScreenManager;

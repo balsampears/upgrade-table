@@ -50,12 +50,14 @@ public class ItemLevelPO {
         this.setMaxLevel(compoundNBT.getInt("maxLevel"));
     }
 
-    public void upgrade(int upgradeLevel){
+    public boolean upgrade(int upgradeLevel){
+        if (this.level >= this.maxLevel) return false;
         this.level = Math.min(level+upgradeLevel, maxLevel);
+        return true;
     }
 
-    public void upgrade(){
-        upgrade(1);
+    public boolean upgrade(){
+        return upgrade(1);
     }
 
     public float getValue(){
