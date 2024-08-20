@@ -8,8 +8,8 @@ import net.minecraft.nbt.CompoundNBT;
  */
 public abstract class BaseItemAbility implements IItemAbility {
 
-    private ItemLevelPO total;
-    private ItemLevelPO duration;
+    private final ItemLevelPO total;
+    private final ItemLevelPO duration;
 
     public ItemLevelPO getTotal() {
         return total;
@@ -20,8 +20,8 @@ public abstract class BaseItemAbility implements IItemAbility {
     }
 
     public BaseItemAbility(int totalMaxLevel, int durationMaxLevel) {
-        this.total = new ItemLevelPO(totalMaxLevel, 0f);
-        this.duration = new ItemLevelPO(durationMaxLevel, 100f);
+        this.total = new ItemLevelPO(totalMaxLevel, null);
+        this.duration = new ItemLevelPO(durationMaxLevel, new float[]{100,200,300,400,500,600});
     }
 
     @Override

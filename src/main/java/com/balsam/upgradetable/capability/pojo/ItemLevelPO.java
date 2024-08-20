@@ -6,12 +6,16 @@ public class ItemLevelPO {
 
     private int level;
     private int maxLevel;
-    private float valuePerLevel;
+    private float[] perLevelValues;
 
-    public ItemLevelPO(int maxLevel, float valuePerLevel) {
+    public ItemLevelPO(int maxLevel, float[] perLevelValues) {
         this.level = 0;
         this.maxLevel = maxLevel;
-        this.valuePerLevel = valuePerLevel;
+        if (perLevelValues!=null) {
+            if (perLevelValues.length != maxLevel)
+                throw new IllegalArgumentException("values array length must be equals max Level");
+            this.perLevelValues = perLevelValues;
+        }
     }
 
     public int getLevel() {
@@ -28,14 +32,6 @@ public class ItemLevelPO {
 
     public void setMaxLevel(int maxLevel) {
         this.maxLevel = maxLevel;
-    }
-
-    public float getValuePerLevel() {
-        return valuePerLevel;
-    }
-
-    public void setValuePerLevel(float valuePerLevel) {
-        this.valuePerLevel = valuePerLevel;
     }
 
     public CompoundNBT serializeNBT() {
@@ -61,6 +57,6 @@ public class ItemLevelPO {
     }
 
     public float getValue(){
-        return this.level * this.valuePerLevel;
+        return this.perLevelValues[this.level-1];
     }
 }
