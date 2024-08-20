@@ -1,14 +1,29 @@
 package com.balsam.upgradetable.capability.pojo;
 
+import com.balsam.upgradetable.config.AttributeEnum;
 import net.minecraft.nbt.CompoundNBT;
 
-public class ItemLevelPO {
+public class ItemAttributePO {
 
+    /**
+     * 属性枚举
+     */
+    private AttributeEnum attributeEnum;
+    /**
+     * 当前等级
+     */
     private int level;
+    /**
+     * 最大等级
+     */
     private int maxLevel;
+    /**
+     * 不同等级的数据值
+     */
     private float[] perLevelValues;
 
-    public ItemLevelPO(int maxLevel, float[] perLevelValues) {
+    public ItemAttributePO(AttributeEnum attributeEnum, int maxLevel, float[] perLevelValues) {
+        this.attributeEnum = attributeEnum;
         this.level = 0;
         this.maxLevel = maxLevel;
         if (perLevelValues!=null) {
@@ -16,6 +31,10 @@ public class ItemLevelPO {
                 throw new IllegalArgumentException("values array length must be equals max Level");
             this.perLevelValues = perLevelValues;
         }
+    }
+
+    public AttributeEnum getAttributeEnum() {
+        return attributeEnum;
     }
 
     public int getLevel() {
@@ -58,5 +77,9 @@ public class ItemLevelPO {
 
     public float getValue(){
         return this.perLevelValues[this.level-1];
+    }
+
+    public float getValue(int level){
+        return this.perLevelValues[level-1];
     }
 }

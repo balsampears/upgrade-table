@@ -3,6 +3,7 @@ package com.balsam.upgradetable.block;
 import com.balsam.upgradetable.capability.itemAbility.BaseItemAbility;
 import com.balsam.upgradetable.capability.itemAbility.IItemAbility;
 import com.balsam.upgradetable.capability.itemAbility.TieredItemAbility;
+import com.balsam.upgradetable.config.AttributeEnum;
 import com.balsam.upgradetable.config.Constants;
 import com.balsam.upgradetable.mod.ModCapability;
 import com.balsam.upgradetable.network.Networking;
@@ -83,18 +84,18 @@ public class UpgradeTableTileEntity extends TileEntity implements INamedContaine
                 TieredItemAbility tieredItemAbility = (TieredItemAbility) o;
                 tieredItemAbility.getAttack().upgrade();
                 ItemStackUtil.addOrUpdateAttributeModifier(itemStack, AttributeRegistry.AttackDamage.get(),new AttributeModifier(
-                        Constants.Uuid.ATTACK_DAMAGE, "Weapon Attribute", tieredItemAbility.getAttack().getValue(), AttributeModifier.Operation.ADDITION),
+                        AttributeEnum.ATTACK_DAMAGE.getUuid(), "Weapon Attribute", tieredItemAbility.getAttack().getValue(), AttributeModifier.Operation.ADDITION),
                         EquipmentSlotType.MAINHAND);
                 //攻速
                 tieredItemAbility.getAttackSpeed().upgrade();
                 ItemStackUtil.addOrUpdateAttributeModifier(itemStack, AttributeRegistry.AttackSpeed.get(),new AttributeModifier(
-                                Constants.Uuid.ATTACK_SPEED, "Weapon Attribute", tieredItemAbility.getAttackSpeed().getValue(), AttributeModifier.Operation.ADDITION),
+                                AttributeEnum.ATTACK_SPEED.getUuid(), "Weapon Attribute", tieredItemAbility.getAttackSpeed().getValue(), AttributeModifier.Operation.ADDITION),
                         EquipmentSlotType.MAINHAND);
             }
             //耐久
             baseItemAbility.getDuration().upgrade();
             ItemStackUtil.addOrUpdateAttributeModifier(itemStack, AttributeRegistry.MaxDuration.get(),new AttributeModifier(
-                            Constants.Uuid.MAX_DURATION, "Normal Attribute", baseItemAbility.getDuration().getValue(), AttributeModifier.Operation.ADDITION),
+                            AttributeEnum.MAX_DURATION.getUuid(), "Normal Attribute", baseItemAbility.getDuration().getValue(), AttributeModifier.Operation.ADDITION),
                     EquipmentSlotType.MAINHAND);
 
             //通知客户端更新
