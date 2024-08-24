@@ -18,8 +18,8 @@ public abstract class BaseItemAbility implements IItemAbility {
      */
     protected final List<ItemAttributePO> displayAttributes;
 
-    private final ItemAttributePO total;
-    private final ItemAttributePO duration;
+    protected final ItemAttributePO total;
+    protected ItemAttributePO duration;
 
     public ItemAttributePO getTotal() {
         return total;
@@ -33,12 +33,10 @@ public abstract class BaseItemAbility implements IItemAbility {
         return displayAttributes;
     }
 
-    public BaseItemAbility(int totalMaxLevel, int durationMaxLevel) {
+    public BaseItemAbility(int totalMaxLevel) {
         this.total = new ItemAttributePO(AttributeEnum.Total, totalMaxLevel, null);
-        this.duration = new ItemAttributePO(AttributeEnum.MAX_DURATION, durationMaxLevel, new float[]{100,200,300,400,500,600});
         this.displayAttributes = new ArrayList<>();
         this.displayAttributes.add(total);
-        this.displayAttributes.add(duration);
     }
 
     @Override

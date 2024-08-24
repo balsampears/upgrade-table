@@ -69,6 +69,21 @@ public class UpgradeTableTileEntity extends TileEntity implements INamedContaine
         LazyOptional<IItemAbility> levelOption = itemStack.getCapability(ModCapability.itemAbility);
         levelOption.ifPresent(o -> {
             BaseItemAbility baseItemAbility = (BaseItemAbility) o;
+            //判断能否升级
+            if (!baseItemAbility.getTotal().canUpgrade()) return;
+            if (upgradeItemIndex+1 >= baseItemAbility.getDisplayAttributes().size()) return;
+            ItemAttributePO targetAttribute = baseItemAbility.getDisplayAttributes().get(upgradeItemIndex + 1);
+            if (targetAttribute == null || !targetAttribute.canUpgrade()) return;
+            if (itemStack.getMaxDamage() - targetAttribute.getPerLevelReduceDuration() <=0) {
+                //todo 发送信息栏通知
+                Logger.info("升级失败，物品已接近损坏");
+                return;
+            }
+
+            //总等级升级、能力值升级
+            baseItemAbility.getTotal().upgrade();
+            targetAttribute.upgrade();
+            Logger.info(String.format("当前总等级为：%d/%d", baseItemAbility.getTotal().getLevel(), baseItemAbility.getTotal().getMaxLevel()));
             //每次升级，都会刷新全部属性
             //刷新原版的属性
             for (EquipmentSlotType slotType : EquipmentSlotType.values()) {
@@ -77,16 +92,8 @@ public class UpgradeTableTileEntity extends TileEntity implements INamedContaine
                     ItemStackUtil.addOrUpdateAttributeModifier(itemStack, entry.getKey(), entry.getValue(), slotType);
                 }
             }
-            if (!baseItemAbility.getTotal().canUpgrade()) return;
-            if (upgradeItemIndex+1 >= baseItemAbility.getDisplayAttributes().size()) return;
-            ItemAttributePO targetAttribute = baseItemAbility.getDisplayAttributes().get(upgradeItemIndex + 1);
-            if (targetAttribute == null || !targetAttribute.canUpgrade()) return;
-
-            //总等级升级、能力值升级
-            baseItemAbility.getTotal().upgrade();
-            targetAttribute.upgrade();
-            Logger.info(String.format("当前总等级为：%d/%d", baseItemAbility.getTotal().getLevel(), baseItemAbility.getTotal().getMaxLevel()));
             //刷新能力值属性
+            int maxDuration = 0;
             for (ItemAttributePO attribute : baseItemAbility.getDisplayAttributes()) {
                 switch (attribute.getAttributeEnum()) {
                     case ATTACK_DAMAGE:
@@ -100,11 +107,18 @@ public class UpgradeTableTileEntity extends TileEntity implements INamedContaine
                                 EquipmentSlotType.MAINHAND);
                         break;
                     case MAX_DURATION:
-                        ItemStackUtil.addOrUpdateAttributeModifier(itemStack, AttributeRegistry.MaxDuration.get(), new AttributeModifier(
-                                        AttributeEnum.MAX_DURATION.getUuid(), "Normal Attribute", attribute.getValue(), AttributeModifier.Operation.ADDITION),
-                                EquipmentSlotType.MAINHAND);
+                        maxDuration += attribute.getValue();
                         break;
                 }
+                maxDuration -= attribute.getReduceDuration();
+            }
+            //特别处理：耐久度
+            if (maxDuration != 0){
+                ItemStackUtil.addOrUpdateAttributeModifier(itemStack, AttributeRegistry.MaxDuration.get(), new AttributeModifier(
+                                AttributeEnum.MAX_DURATION.getUuid(), "Normal Attribute", maxDuration, AttributeModifier.Operation.ADDITION),
+                        EquipmentSlotType.MAINHAND);
+            } else {
+                ItemStackUtil.removeAttributeModifier(itemStack, AttributeRegistry.MaxDuration.get(), EquipmentSlotType.MAINHAND);
             }
             //通知客户端更新
             Networking.INSTANCE.send(PacketDistributor.ALL.noArg(), new UpgradeButtonPack(o.serializeNBT(), upgradeItemIndex));

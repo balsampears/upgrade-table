@@ -13,6 +13,7 @@ public class ItemStackUtil {
 
     /**
      * 新增或更新IItemAbility的属性
+     *
      * @param itemStack
      * @param attribute 属性
      * @param modifier  属性修改对象
@@ -21,28 +22,26 @@ public class ItemStackUtil {
     public static void addOrUpdateAttributeModifier(ItemStack itemStack, Attribute attribute, AttributeModifier modifier, EquipmentSlotType slotType) {
         ListNBT attributeModifiers = (ListNBT) itemStack.getOrCreateTag().get("AttributeModifiers");
         //删除已存在
+        removeAttributeModifier(attributeModifiers, attribute, slotType);
+        //添加新属性
+        itemStack.addAttributeModifier(attribute, modifier, slotType);
+    }
+
+    private static void removeAttributeModifier(ListNBT attributeModifiers, Attribute attribute, EquipmentSlotType slotType) {
         if (attributeModifiers != null) {
             for (int i = attributeModifiers.size() - 1; i >= 0; i--) {
                 CompoundNBT attriObj = (CompoundNBT) attributeModifiers.get(i);
                 String attributeName = ForgeRegistries.ATTRIBUTES.getKey(attribute).toString();
-                if (StringUtils.equals(attriObj.getString("AttributeName"), attributeName)) {
+                if (StringUtils.equals(attriObj.getString("AttributeName"), attributeName) &&
+                        StringUtils.equals(attriObj.getString("Slot"), slotType.getName())) {
                     attributeModifiers.remove(i);
                 }
             }
         }
-        //添加新属性
-        itemStack.addAttributeModifier(attribute, modifier, slotType);
-//        //删除已存在
-//        if (attributeModifiers != null) {
-//            for (int i = attributeModifiers.size() - 1; i >= 0; i--) {
-//                CompoundNBT attriObj = (CompoundNBT) attributeModifiers.get(i);
-//                String attributeName = ForgeRegistries.ATTRIBUTES.getKey(attribute).toString();
-//                if (StringUtils.equals(attriObj.getString("AttributeName"), attributeName)) {
-//                    attributeModifiers.remove(i);
-//                }
-//            }
-//        }
-//        //添加新属性
-//        itemStack.addAttributeModifier(attribute, modifier, slotType);
+    }
+
+    public static void removeAttributeModifier(ItemStack itemStack, Attribute attribute, EquipmentSlotType slotType) {
+        ListNBT attributeModifiers = (ListNBT) itemStack.getOrCreateTag().get("AttributeModifiers");
+        removeAttributeModifier(attributeModifiers, attribute, slotType);
     }
 }

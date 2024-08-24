@@ -21,8 +21,22 @@ public class ItemAttributePO {
      * 不同等级的数据值
      */
     private float[] perLevelValues;
+    /**
+     * 每等级损耗的耐久度
+     */
+    private int perLevelReduceDuration;
 
-    public ItemAttributePO(AttributeEnum attributeEnum, int maxLevel, float[] perLevelValues) {
+    public ItemAttributePO(AttributeEnum attributeEnum, int maxLevel, float[] perLevelValues){
+        this(attributeEnum, maxLevel, perLevelValues, 0);
+    }
+
+    /**
+     * @param attributeEnum         能力类型
+     * @param maxLevel              能力最大等级
+     * @param perLevelValues        能力每等级提升的数值
+     * @param perLevelReduceDuration    每等级损耗的耐久度
+     */
+    public ItemAttributePO(AttributeEnum attributeEnum, int maxLevel, float[] perLevelValues, int perLevelReduceDuration) {
         this.attributeEnum = attributeEnum;
         this.level = 0;
         this.maxLevel = maxLevel;
@@ -31,6 +45,7 @@ public class ItemAttributePO {
                 throw new IllegalArgumentException("perLevelValues array length must be equals maxLevel");
             this.perLevelValues = perLevelValues;
         }
+        this.perLevelReduceDuration = perLevelReduceDuration;
     }
 
     public AttributeEnum getAttributeEnum() {
@@ -51,6 +66,10 @@ public class ItemAttributePO {
 
     public void setMaxLevel(int maxLevel) {
         this.maxLevel = maxLevel;
+    }
+
+    public int getPerLevelReduceDuration() {
+        return perLevelReduceDuration;
     }
 
     public CompoundNBT serializeNBT() {
@@ -116,5 +135,12 @@ public class ItemAttributePO {
      */
     public boolean canUpgrade(){
         return this.level < this.maxLevel;
+    }
+
+    /**
+     * 获取当前等级损耗的耐久
+     */
+    public int getReduceDuration(){
+        return this.level * this.perLevelReduceDuration;
     }
 }
