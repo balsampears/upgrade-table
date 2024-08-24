@@ -26,8 +26,8 @@ public class UpgradeTableContainer extends Container {
         }
         //方块物品栏
         blockEntity = (UpgradeTableTileEntity) world.getBlockEntity(blockPos);
-        this.addSlot(new Slot(blockEntity.getInventory(), 0, 26, 16));
-        this.addSlot(new Slot(blockEntity.getInventory(), 1, 26, 52));
+        this.addSlot(new Slot(blockEntity.getInventory(), 0, 13, 20));
+        this.addSlot(new Slot(blockEntity.getInventory(), 1, 13, 50));
     }
 
 
@@ -43,7 +43,7 @@ public class UpgradeTableContainer extends Container {
         ItemStack oldItemStck = slot.getItem();
         ItemStack newItemStck = oldItemStck.copy();
         if (index < 36){
-            if (!this.moveItemStackTo(oldItemStck, 36, this.slots.size(), true))
+            if (!this.moveItemStackTo(oldItemStck, 36, this.slots.size(), false))
                 return ItemStack.EMPTY;
         } else {
             if (!this.moveItemStackTo(oldItemStck, 0, 36, false))

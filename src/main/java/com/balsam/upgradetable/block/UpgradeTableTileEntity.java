@@ -3,6 +3,7 @@ package com.balsam.upgradetable.block;
 import com.balsam.upgradetable.capability.itemAbility.BaseItemAbility;
 import com.balsam.upgradetable.capability.itemAbility.IItemAbility;
 import com.balsam.upgradetable.capability.itemAbility.TieredItemAbility;
+import com.balsam.upgradetable.capability.pojo.ItemAttributePO;
 import com.balsam.upgradetable.config.AttributeEnum;
 import com.balsam.upgradetable.config.Constants;
 import com.balsam.upgradetable.mod.ModCapability;
@@ -61,50 +62,57 @@ public class UpgradeTableTileEntity extends TileEntity implements INamedContaine
         return inventory;
     }
 
-    public void upgrade() {
-        ItemStack itemStack = inventory.getItem(1);
+    public void upgrade(int upgradeItemIndex) {
+        ItemStack itemStack = inventory.getItem(0);
         if (itemStack.isEmpty()) return;
 
         LazyOptional<IItemAbility> levelOption = itemStack.getCapability(ModCapability.itemAbility);
         levelOption.ifPresent(o -> {
             BaseItemAbility baseItemAbility = (BaseItemAbility) o;
-            //补充原版的属性
+            //每次升级，都会刷新全部属性
+            //刷新原版的属性
             for (EquipmentSlotType slotType : EquipmentSlotType.values()) {
                 Multimap<Attribute, AttributeModifier> attributeModifierMap = itemStack.getItem().getAttributeModifiers(slotType, itemStack);
                 for (Map.Entry<Attribute, AttributeModifier> entry : attributeModifierMap.entries()) {
                     ItemStackUtil.addOrUpdateAttributeModifier(itemStack, entry.getKey(), entry.getValue(), slotType);
                 }
             }
-            //总等级升级
+            if (!baseItemAbility.getTotal().canUpgrade()) return;
+            if (upgradeItemIndex+1 >= baseItemAbility.getDisplayAttributes().size()) return;
+            ItemAttributePO targetAttribute = baseItemAbility.getDisplayAttributes().get(upgradeItemIndex + 1);
+            if (targetAttribute == null || !targetAttribute.canUpgrade()) return;
+
+            //总等级升级、能力值升级
             baseItemAbility.getTotal().upgrade();
+            targetAttribute.upgrade();
             Logger.info(String.format("当前总等级为：%d/%d", baseItemAbility.getTotal().getLevel(), baseItemAbility.getTotal().getMaxLevel()));
-
-            if (o instanceof TieredItemAbility) {
-                //攻击
-                TieredItemAbility tieredItemAbility = (TieredItemAbility) o;
-                tieredItemAbility.getAttack().upgrade();
-                ItemStackUtil.addOrUpdateAttributeModifier(itemStack, AttributeRegistry.AttackDamage.get(),new AttributeModifier(
-                        AttributeEnum.ATTACK_DAMAGE.getUuid(), "Weapon Attribute", tieredItemAbility.getAttack().getValue(), AttributeModifier.Operation.ADDITION),
-                        EquipmentSlotType.MAINHAND);
-                //攻速
-                tieredItemAbility.getAttackSpeed().upgrade();
-                ItemStackUtil.addOrUpdateAttributeModifier(itemStack, AttributeRegistry.AttackSpeed.get(),new AttributeModifier(
-                                AttributeEnum.ATTACK_SPEED.getUuid(), "Weapon Attribute", tieredItemAbility.getAttackSpeed().getValue(), AttributeModifier.Operation.ADDITION),
-                        EquipmentSlotType.MAINHAND);
+            //刷新能力值属性
+            for (ItemAttributePO attribute : baseItemAbility.getDisplayAttributes()) {
+                switch (attribute.getAttributeEnum()) {
+                    case ATTACK_DAMAGE:
+                        ItemStackUtil.addOrUpdateAttributeModifier(itemStack, AttributeRegistry.AttackDamage.get(), new AttributeModifier(
+                                        AttributeEnum.ATTACK_DAMAGE.getUuid(), "Weapon Attribute", attribute.getValue(), AttributeModifier.Operation.ADDITION),
+                                EquipmentSlotType.MAINHAND);
+                        break;
+                    case ATTACK_SPEED:
+                        ItemStackUtil.addOrUpdateAttributeModifier(itemStack, AttributeRegistry.AttackSpeed.get(), new AttributeModifier(
+                                        AttributeEnum.ATTACK_SPEED.getUuid(), "Weapon Attribute", attribute.getValue(), AttributeModifier.Operation.ADDITION),
+                                EquipmentSlotType.MAINHAND);
+                        break;
+                    case MAX_DURATION:
+                        ItemStackUtil.addOrUpdateAttributeModifier(itemStack, AttributeRegistry.MaxDuration.get(), new AttributeModifier(
+                                        AttributeEnum.MAX_DURATION.getUuid(), "Normal Attribute", attribute.getValue(), AttributeModifier.Operation.ADDITION),
+                                EquipmentSlotType.MAINHAND);
+                        break;
+                }
             }
-            //耐久
-            baseItemAbility.getDuration().upgrade();
-            ItemStackUtil.addOrUpdateAttributeModifier(itemStack, AttributeRegistry.MaxDuration.get(),new AttributeModifier(
-                            AttributeEnum.MAX_DURATION.getUuid(), "Normal Attribute", baseItemAbility.getDuration().getValue(), AttributeModifier.Operation.ADDITION),
-                    EquipmentSlotType.MAINHAND);
-
             //通知客户端更新
-            Networking.INSTANCE.send(PacketDistributor.ALL.noArg(), new UpgradeButtonPack(o.serializeNBT()));
+            Networking.INSTANCE.send(PacketDistributor.ALL.noArg(), new UpgradeButtonPack(o.serializeNBT(), upgradeItemIndex));
         });
     }
 
     @OnlyIn(Dist.CLIENT)
-    public void syncData(CompoundNBT compoundNBT) {
+    public void syncData(CompoundNBT compoundNBT, int upgradeItemIndex) {
         ItemStack itemStack = inventory.getItem(1);
         if (itemStack.isEmpty()) return;
         itemStack.getCapability(ModCapability.itemAbility).ifPresent(o -> {
