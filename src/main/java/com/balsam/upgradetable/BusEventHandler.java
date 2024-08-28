@@ -19,7 +19,6 @@ public class BusEventHandler {
         if (object.getItem() instanceof TieredItem) {
             event.addCapability(new ResourceLocation(String.format("cap.%s.upgrade", Constants.MOD_ID)),
                     new ItemAbilityProvider(new TieredItemAbility()));
-            Logger.info(String.format("物品%s使用'升级'的能力",object.getItem().getRegistryName().toString()));
         }
     }
 

@@ -70,15 +70,11 @@ public class UpgradeTableTileEntity extends TileEntity implements INamedContaine
         levelOption.ifPresent(o -> {
             BaseItemAbility baseItemAbility = (BaseItemAbility) o;
             //判断能否升级
-            if (!baseItemAbility.getTotal().canUpgrade()) return;
-            if (upgradeItemIndex+1 >= baseItemAbility.getDisplayAttributes().size()) return;
-            ItemAttributePO targetAttribute = baseItemAbility.getDisplayAttributes().get(upgradeItemIndex + 1);
-            if (targetAttribute == null || !targetAttribute.canUpgrade()) return;
-            if (itemStack.getMaxDamage() - targetAttribute.getPerLevelReduceDuration() <=0) {
-                //todo 发送信息栏通知
-                Logger.info("升级失败，物品已接近损坏");
-                return;
-            }
+            ItemAttributePO targetAttribute = checkUpgrade(upgradeItemIndex, itemStack, baseItemAbility);
+            if (targetAttribute == null) return;
+
+            //消耗材料
+            inventory.setItem(1, ItemStack.EMPTY);
 
             //总等级升级、能力值升级
             baseItemAbility.getTotal().upgrade();
@@ -123,6 +119,24 @@ public class UpgradeTableTileEntity extends TileEntity implements INamedContaine
             //通知客户端更新
             Networking.INSTANCE.send(PacketDistributor.ALL.noArg(), new UpgradeButtonPack(o.serializeNBT(), upgradeItemIndex));
         });
+    }
+
+    private ItemAttributePO checkUpgrade(int upgradeItemIndex, ItemStack itemStack, BaseItemAbility baseItemAbility) {
+        //选定能力校验
+        if (upgradeItemIndex +1 >= baseItemAbility.getDisplayAttributes().size()) return null;
+        //总等级校验
+        if (!baseItemAbility.getTotal().canUpgrade()) return null;
+        //能力等级校验
+        ItemAttributePO targetAttribute = baseItemAbility.getDisplayAttributes().get(upgradeItemIndex + 1);
+        if (targetAttribute == null || !targetAttribute.canUpgrade()) return null;
+        //消耗耐久校验
+        if (itemStack.getMaxDamage() - targetAttribute.getPerLevelReduceDuration() <=0) {
+            Logger.info("升级失败，物品已接近损坏"); //todo 发送信息栏通知
+            return null;
+        }
+        //消耗材料校验
+        if (inventory.getItem(1).getItem() != inventory.getItem(0).getItem()) return null;
+        return targetAttribute;
     }
 
     @OnlyIn(Dist.CLIENT)

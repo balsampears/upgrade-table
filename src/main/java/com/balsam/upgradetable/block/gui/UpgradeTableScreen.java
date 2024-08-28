@@ -25,7 +25,9 @@ import net.minecraftforge.server.command.TextComponentHelper;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 public class UpgradeTableScreen extends ContainerScreen<UpgradeTableContainer> {
@@ -69,12 +71,11 @@ public class UpgradeTableScreen extends ContainerScreen<UpgradeTableContainer> {
     public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
         this.renderBackground(matrixStack);
         super.render(matrixStack, mouseX, mouseY, partialTicks);
-        for (Button upgradeButton : this.upgradeButtons) {
-            upgradeButton.render(matrixStack, mouseX, mouseY, partialTicks);
-        }
-
+        Map<Integer, Boolean> buttonActiveMap = new HashMap<>();
+        //渲染面板
         UpgradeTableTileEntity blockEntity = this.menu.blockEntity;
         ItemStack itemStack = blockEntity.getInventory().getItem(0);
+        ItemStack materialItemStack = blockEntity.getInventory().getItem(1);
         if (itemStack != ItemStack.EMPTY) {
             LazyOptional<IItemAbility> capability = itemStack.getCapability(ModCapability.itemAbility);
             capability.ifPresent(o -> {
@@ -90,13 +91,27 @@ public class UpgradeTableScreen extends ContainerScreen<UpgradeTableContainer> {
                         textComponent.append(String.format(" %d / %d", attribute.getLevel(), attribute.getMaxLevel()));
                     } else {
                         textComponent.append(String.format(" +%.2f -> +%.2f", attribute.getValue(), attribute.getNextLevelValue()));
+                        //渲染按钮
+                        if (i - 1 >=0 && i-1 < upgradeButtons.size()) {
+                            boolean active = attribute.canUpgrade() && base.getTotal().canUpgrade()
+                                    && materialItemStack.getItem().equals(itemStack.getItem())
+                                    && itemStack.getMaxDamage() - attribute.getPerLevelReduceDuration() > 0;
+                            buttonActiveMap.put(i - 1, active);
+                        }
                     }
+                    //渲染文本
                     this.font.draw(matrixStack, textComponent, (this.leftPos + 39) / fontScale, (this.topPos + 17 + 10 * i) / fontScale, Color.BLACK.getRGB());
 
                 }
 
                 matrixStack.scale(1 / fontScale, 1 / fontScale, 1 / fontScale);
             });
+        }
+        //渲染按钮
+        for (int i=0;i<upgradeButtons.size();i++) {
+            Button upgradeButton = upgradeButtons.get(i);
+            upgradeButton.active = buttonActiveMap.getOrDefault(i, false);
+            upgradeButton.render(matrixStack, mouseX, mouseY, partialTicks);
         }
         this.renderTooltip(matrixStack, mouseX, mouseY);
     }
