@@ -5,8 +5,8 @@
   "refmap": "mixins.upgradetable.refmap.json",
   "mixins": [
     "MixinAttributeModifierManager",
-    "MixinLivingEntity",
-    "MixinItemStack"
+    "MixinItemStack",
+    "MixinLivingEntity"
   ],
   "minVersion": "0.8"
 }

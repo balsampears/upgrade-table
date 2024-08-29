@@ -6,10 +6,20 @@ import java.util.UUID;
  * 属性枚举
  */
 public enum AttributeEnum {
+    //总等级
     Total("attribute.name.upgrade.total","total","FA233E1C-4180-4865-B01B-BCCE9785ACA0"),
+    //最大耐久
     MAX_DURATION("attribute.name.upgrade.max_duration","duration","FA233E1C-4180-4865-B01B-BCCE9785ACB0"),
+    //攻击伤害
     ATTACK_DAMAGE("attribute.name.upgrade.attack_damage","attack","FA233E1C-4180-4865-B01B-BCCE9785ACB1"),
+    //攻击速度
     ATTACK_SPEED("attribute.name.upgrade.attack_speed","attackSpeed","FA233E1C-4180-4865-B01B-BCCE9785ACB2"),
+    //弓力量
+    BOW_POWER("attribute.name.upgrade.bow_power","bowPower","FA233E1C-4180-4865-B01B-BCCE9785ACB2"),
+    //拉弓时间
+    BOW_ARC_TIME("attribute.name.upgrade.bow_arc_time","bowArcTime","FA233E1C-4180-4865-B01B-BCCE9785ACB2"),
+    //弹药消耗降低
+    AMMO_COST("attribute.name.upgrade.ammo_cost","ammoCost","FA233E1C-4180-4865-B01B-BCCE9785ACB2"),
     ;
 
     /**
