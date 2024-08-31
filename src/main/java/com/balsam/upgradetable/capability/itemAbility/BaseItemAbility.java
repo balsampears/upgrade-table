@@ -6,6 +6,7 @@ import net.minecraft.nbt.CompoundNBT;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * 等级能力实现
@@ -53,5 +54,17 @@ public abstract class BaseItemAbility implements IItemAbility {
         for (ItemAttributePO po : displayAttributes) {
             po.deserializeNBT(compoundNBT.getCompound(po.getAttributeEnum().getSimpleName()));
         }
+    }
+
+    /**
+     * 查询对应枚举的属性
+     */
+    public Optional<ItemAttributePO> findAttribute(AttributeEnum attributeEnum){
+        for (ItemAttributePO displayAttribute : displayAttributes) {
+            if (displayAttribute.getAttributeEnum() == attributeEnum){
+                return Optional.ofNullable(displayAttribute);
+            }
+        }
+        return Optional.empty();
     }
 }
