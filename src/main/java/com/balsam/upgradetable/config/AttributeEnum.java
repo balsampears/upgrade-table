@@ -14,9 +14,9 @@ public enum AttributeEnum {
     ATTACK_DAMAGE("attribute.name.upgrade.attack_damage","attack","FA233E1C-4180-4865-B01B-BCCE9785ACB1"),
     //攻击速度
     ATTACK_SPEED("attribute.name.upgrade.attack_speed","attackSpeed","FA233E1C-4180-4865-B01B-BCCE9785ACB2"),
-    //弓力量
-    BOW_POWER("attribute.name.upgrade.bow_power","bowPower","FA233E1C-4180-4865-B01B-BCCE9785ACB2"),
-    //拉弓时间
+    //额外弓箭伤害
+    BOW_DAMAGE("attribute.name.upgrade.bow_damage","bowDamage","FA233E1C-4180-4865-B01B-BCCE9785ACB2"),
+    //拉弓时间降低
     BOW_ARC_TIME("attribute.name.upgrade.bow_arc_time","bowArcTime","FA233E1C-4180-4865-B01B-BCCE9785ACB2"),
     //弹药消耗降低
     AMMO_COST("attribute.name.upgrade.ammo_cost","ammoCost","FA233E1C-4180-4865-B01B-BCCE9785ACB2"),

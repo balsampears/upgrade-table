@@ -5,7 +5,7 @@
   "attribute.name.upgrade.attack_damage": "额外攻击伤害",
   "attribute.name.upgrade.attack_speed": "额外攻击速度",
   "attribute.name.upgrade.max_duration": "最大耐久度",
-  "attribute.name.upgrade.bow_power": "额外力量",
+  "attribute.name.upgrade.bow_damage": "额外弓箭伤害",
   "attribute.name.upgrade.bow_arc_time": "拉弓时间降低",
   "attribute.name.upgrade.ammo_cost": "弹药消耗降低"
 }

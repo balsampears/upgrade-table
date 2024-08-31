@@ -2,7 +2,6 @@ package com.balsam.upgradetable.block;
 
 import com.balsam.upgradetable.capability.itemAbility.BaseItemAbility;
 import com.balsam.upgradetable.capability.itemAbility.IItemAbility;
-import com.balsam.upgradetable.capability.itemAbility.TieredItemAbility;
 import com.balsam.upgradetable.capability.pojo.ItemAttributePO;
 import com.balsam.upgradetable.config.AttributeEnum;
 import com.balsam.upgradetable.config.Constants;
@@ -14,7 +13,6 @@ import com.balsam.upgradetable.registry.TileEntityTypeRegistry;
 import com.balsam.upgradetable.util.ItemStackUtil;
 import com.balsam.upgradetable.util.Logger;
 import com.google.common.collect.Multimap;
-import com.google.gson.Gson;
 import net.minecraft.entity.ai.attributes.Attribute;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.player.PlayerEntity;
@@ -25,7 +23,6 @@ import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.nbt.ListNBT;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
@@ -33,8 +30,6 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fml.network.PacketDistributor;
-import net.minecraftforge.registries.ForgeRegistries;
-import org.apache.commons.lang3.StringUtils;
 
 import javax.annotation.Nullable;
 import java.util.Map;
@@ -102,9 +97,9 @@ public class UpgradeTableTileEntity extends TileEntity implements INamedContaine
                                         AttributeEnum.ATTACK_SPEED.getUuid(), "Weapon Attribute", attribute.getValue(), AttributeModifier.Operation.ADDITION),
                                 EquipmentSlotType.MAINHAND);
                         break;
-                    case BOW_POWER:
-                        ItemStackUtil.addOrUpdateAttributeModifier(itemStack, AttributeRegistry.BowPower.get(), new AttributeModifier(
-                                        AttributeEnum.BOW_POWER.getUuid(), "Weapon Attribute", attribute.getValue(), AttributeModifier.Operation.ADDITION),
+                    case BOW_DAMAGE:
+                        ItemStackUtil.addOrUpdateAttributeModifier(itemStack, AttributeRegistry.BowDamage.get(), new AttributeModifier(
+                                        AttributeEnum.BOW_DAMAGE.getUuid(), "Weapon Attribute", attribute.getValue(), AttributeModifier.Operation.ADDITION),
                                 EquipmentSlotType.MAINHAND);
                         break;
                     case BOW_ARC_TIME:

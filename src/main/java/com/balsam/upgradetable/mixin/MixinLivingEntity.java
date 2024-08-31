@@ -50,7 +50,7 @@ public abstract class MixinLivingEntity extends Entity {
                 float multi = 1 + attr.getValue();
                 int newTimeLeft = (int) ((1 - multi) * useItem.getUseDuration() + multi * useItemRemaining);
                 callback.setReturnValue(newTimeLeft);
-                Logger.info(String.format("拉弓剩余时间：%d -> %d ", useItemRemaining, newTimeLeft));
+//                Logger.info(String.format("拉弓剩余时间：%d -> %d ", useItemRemaining, newTimeLeft));
             });
         });
     }

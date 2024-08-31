@@ -18,8 +18,8 @@ public class AttributeRegistry {
             ()->new RangedAttribute(AttributeEnum.ATTACK_DAMAGE.getName(), 0.0D, 0.0D, 9999));
     public static final RegistryObject<Attribute> AttackSpeed = ATTRIBUTES.register("upgrade.attack_speed",
             ()->(new RangedAttribute(AttributeEnum.ATTACK_SPEED.getName(), 0.0D, 0.0D, 9999)).setSyncable(true));
-    public static final RegistryObject<Attribute> BowPower = ATTRIBUTES.register("upgrade.bow_power",
-            ()->(new RangedAttribute(AttributeEnum.BOW_POWER.getName(), 0.0D, 0.0D, 9999)).setSyncable(true));
+    public static final RegistryObject<Attribute> BowDamage = ATTRIBUTES.register("upgrade.bow_damage",
+            ()->(new RangedAttribute(AttributeEnum.BOW_DAMAGE.getName(), 0.0D, 0.0D, 9999)).setSyncable(true));
     public static final RegistryObject<Attribute> BowArcTime = ATTRIBUTES.register("upgrade.bow_arc_time",
             ()->(new RangedAttribute(AttributeEnum.BOW_ARC_TIME.getName(), 0.0D, 0.0D, 1)).setSyncable(true));
     public static final RegistryObject<Attribute> AmmoCost = ATTRIBUTES.register("upgrade.ammo_cost",
