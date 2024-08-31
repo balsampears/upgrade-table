@@ -12,9 +12,9 @@ public class BowItemAbility extends BaseItemAbility {
 
     public BowItemAbility() {
         super(Constants.MAX_LEVEL_TOTAL);
-        this.bowPower = new ItemAttributePO(AttributeEnum.BOW_POWER, Constants.MAX_LEVEL_PER_ABILITY, new float[]{0.5f, 1.4f, 2.5f, 4.0f, 5.8f, 8f}, 50);
+        this.bowPower = new ItemAttributePO(AttributeEnum.BOW_POWER, Constants.MAX_LEVEL_PER_ABILITY, new float[]{0.5f, 1f, 1.5f, 2f, 2.5f, 3f}, 75);
         this.bowArcTime = new ItemAttributePO(AttributeEnum.BOW_ARC_TIME, Constants.MAX_LEVEL_PER_ABILITY, new float[]{0.07f, 0.17f, 0.32f, 0.51f, 0.73f, 1f}, 50);
-        this.ammoCost = new ItemAttributePO(AttributeEnum.AMMO_COST, Constants.MAX_LEVEL_PER_ABILITY, new float[]{0.02f, 0.05f, 0.1f, 0.15f, 0.5f, 0.8f});
+        this.ammoCost = new ItemAttributePO(AttributeEnum.AMMO_COST, Constants.MAX_LEVEL_PER_ABILITY, new float[]{0.02f, 0.05f, 0.1f, 0.15f, 0.5f, 0.8f}, 25);
         this.duration = new ItemAttributePO(AttributeEnum.MAX_DURATION, Constants.MAX_LEVEL_PER_ABILITY, new float[]{100,200,300,400,500,600});
         this.displayAttributes.add(this.bowPower);
         this.displayAttributes.add(this.bowArcTime);

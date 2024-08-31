@@ -6,7 +6,8 @@
   "mixins": [
     "MixinAttributeModifierManager",
     "MixinItemStack",
-    "MixinLivingEntity"
+    "MixinLivingEntity",
+    "MixinArrowItem"
   ],
   "minVersion": "0.8"
 }
