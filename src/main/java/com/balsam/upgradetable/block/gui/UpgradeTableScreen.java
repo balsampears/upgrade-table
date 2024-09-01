@@ -94,8 +94,9 @@ public class UpgradeTableScreen extends ContainerScreen<UpgradeTableContainer> {
                         //渲染按钮
                         if (i - 1 >=0 && i-1 < upgradeButtons.size()) {
                             boolean active = attribute.canUpgrade() && base.getTotal().canUpgrade()
-                                    && materialItemStack.getItem().equals(itemStack.getItem())
-                                    && itemStack.getMaxDamage() - attribute.getPerLevelReduceDuration() > 0;
+                                    && materialItemStack.getItem().equals(itemStack.getItem());
+                            if (attribute.getAttributeEnum()!=AttributeEnum.MAX_DURATION)
+                                active = active && itemStack.getMaxDamage() - attribute.getPerLevelReduceDuration() > 0;
                             buttonActiveMap.put(i - 1, active);
                         }
                     }

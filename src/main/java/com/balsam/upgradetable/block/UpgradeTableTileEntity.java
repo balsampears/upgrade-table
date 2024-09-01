@@ -140,8 +140,9 @@ public class UpgradeTableTileEntity extends TileEntity implements INamedContaine
         ItemAttributePO targetAttribute = baseItemAbility.getDisplayAttributes().get(upgradeItemIndex + 1);
         if (targetAttribute == null || !targetAttribute.canUpgrade()) return null;
         //消耗耐久校验
-        if (itemStack.getMaxDamage() - targetAttribute.getPerLevelReduceDuration() <=0) {
-            Logger.info("升级失败，物品已接近损坏"); //todo 发送信息栏通知
+        if (targetAttribute.getAttributeEnum()!=AttributeEnum.MAX_DURATION &&
+                itemStack.getMaxDamage() - targetAttribute.getPerLevelReduceDuration() <=0) {
+            Logger.info("升级失败，物品已接近损坏"); //可以改为发送信息栏通知
             return null;
         }
         //消耗材料校验

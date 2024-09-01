@@ -4,13 +4,14 @@ import net.minecraft.entity.projectile.AbstractArrowEntity;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class ArrowCache {
 
     private static int DELAY_TIMES = 60 * 1000;
 
-    private static Map<AbstractArrowEntity, Float> cache = new HashMap<>();
-    private static Map<AbstractArrowEntity, Long> timeCache = new HashMap<>();
+    private static Map<AbstractArrowEntity, Float> cache = new ConcurrentHashMap<>();
+    private static Map<AbstractArrowEntity, Long> timeCache = new ConcurrentHashMap<>();
 
     public static void setValue(AbstractArrowEntity arrow, float moreDamage){
         cache.put(arrow, moreDamage);

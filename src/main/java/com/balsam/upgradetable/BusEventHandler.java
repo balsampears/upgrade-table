@@ -1,10 +1,10 @@
 package com.balsam.upgradetable;
 
 import com.balsam.upgradetable.capability.ItemAbilityProvider;
-import com.balsam.upgradetable.capability.itemAbility.BowItemAbility;
-import com.balsam.upgradetable.capability.itemAbility.IItemAbility;
-import com.balsam.upgradetable.capability.itemAbility.TieredItemAbility;
+import com.balsam.upgradetable.capability.itemAbility.*;
+import com.balsam.upgradetable.capability.pojo.ItemAttributePO;
 import com.balsam.upgradetable.config.Constants;
+import com.balsam.upgradetable.mod.Config;
 import com.balsam.upgradetable.util.ArrowCache;
 import com.balsam.upgradetable.util.Logger;
 import net.minecraft.entity.projectile.AbstractArrowEntity;
@@ -19,17 +19,31 @@ import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
+import java.util.ArrayList;
+import java.util.ListIterator;
+import java.util.Map;
+
 @Mod.EventBusSubscriber
 public class BusEventHandler {
     @SubscribeEvent
     public static void onAttachCapabilitiesEvent(AttachCapabilitiesEvent<ItemStack> event) throws ClassNotFoundException {
         Item item = event.getObject().getItem();
         IItemAbility itemAbility = null;
-        if (item instanceof TieredItem) {
-            itemAbility = new TieredItemAbility();
-        }
-        else if (item instanceof BowItem) {
-            itemAbility = new BowItemAbility();
+
+//        if (item instanceof TieredItem) {
+//            itemAbility = new TieredItemAbility();
+//        }
+//        else if (item instanceof BowItem) {
+//            itemAbility = new BowItemAbility();
+//        }
+        Map<Class<?>, Config.ConfigItem> configMap = Config.getConfigMap();
+        ListIterator<Map.Entry<Class<?>, Config.ConfigItem>> listIterator = new ArrayList<>(configMap.entrySet()).listIterator(configMap.size());
+        while (listIterator.hasPrevious()){
+            Map.Entry<Class<?>, Config.ConfigItem> entry = listIterator.previous();
+            if (entry.getKey()!=null && entry.getKey().isAssignableFrom(item.getClass())){
+                itemAbility = new ConfigItemAbility(entry.getValue());
+                break;
+            }
         }
 
         if (itemAbility!=null){
@@ -53,7 +67,7 @@ public class BusEventHandler {
                     value = value / (arrowEntity.isCritArrow() ? 1 : 3);
                     event.setAmount(event.getAmount() + value);
                     ArrowCache.removeValue(arrowEntity);
-                    Logger.info("额外增加伤害："+value);
+//                    Logger.info("额外增加伤害："+value);
                 }
             }
         }

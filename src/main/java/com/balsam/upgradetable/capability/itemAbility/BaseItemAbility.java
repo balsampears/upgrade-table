@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * 等级能力实现
+ * 基础能力实现
  */
 public abstract class BaseItemAbility implements IItemAbility {
 
@@ -20,14 +20,9 @@ public abstract class BaseItemAbility implements IItemAbility {
     protected final List<ItemAttributePO> displayAttributes;
 
     protected final ItemAttributePO total;
-    protected ItemAttributePO duration;
 
     public ItemAttributePO getTotal() {
         return total;
-    }
-
-    public ItemAttributePO getDuration() {
-        return duration;
     }
 
     public List<ItemAttributePO> getDisplayAttributes() {

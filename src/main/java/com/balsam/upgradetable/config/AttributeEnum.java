@@ -6,6 +6,8 @@ import java.util.UUID;
  * 属性枚举
  */
 public enum AttributeEnum {
+    //空
+    NULL("", "","FA233E1C-4180-4865-B01B-BCCE9785ACA1"),
     //总等级
     Total("attribute.name.upgrade.total","total","FA233E1C-4180-4865-B01B-BCCE9785ACA0"),
     //最大耐久

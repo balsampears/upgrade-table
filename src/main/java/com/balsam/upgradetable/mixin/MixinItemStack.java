@@ -124,7 +124,7 @@ public abstract class MixinItemStack extends CapabilityProvider<ItemStack> imple
                 //服务端判断是否可以触发消耗降低
                 if (player instanceof ServerPlayerEntity) {
                     float nextFloat = RandomUtils.nextFloat(0, 1);
-                    Logger.info(String.format("弹药消耗降低：%f/%f，判定结果：%b", nextFloat, itemAttributePO.getValue(), nextFloat < itemAttributePO.getValue()));
+//                    Logger.info(String.format("弹药消耗降低：%f/%f，判定结果：%b", nextFloat, itemAttributePO.getValue(), nextFloat < itemAttributePO.getValue()));
                     if (nextFloat < itemAttributePO.getValue())
                         callback.cancel();
                     //同步客户端

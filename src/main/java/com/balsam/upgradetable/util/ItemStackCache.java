@@ -6,10 +6,11 @@ import net.minecraft.item.ItemStack;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class ItemStackCache {
 
-    private static Map<ItemStack, PlayerEntity> cache = new HashMap<>();
+    private static Map<ItemStack, PlayerEntity> cache = new ConcurrentHashMap<>();
 
     public static void setPlayerCache(PlayerEntity playerEntity){
         for (ItemStack item : playerEntity.inventory.items) {
