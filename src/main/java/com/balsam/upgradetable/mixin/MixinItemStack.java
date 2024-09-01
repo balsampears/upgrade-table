@@ -1,17 +1,16 @@
 package com.balsam.upgradetable.mixin;
 
+import com.balsam.upgradetable.cache.AmmoCostCache;
+import com.balsam.upgradetable.cache.CacheFactory;
 import com.balsam.upgradetable.capability.itemAbility.BaseItemAbility;
 import com.balsam.upgradetable.capability.itemAbility.IItemAbility;
 import com.balsam.upgradetable.capability.pojo.ItemAttributePO;
 import com.balsam.upgradetable.config.AttributeEnum;
 import com.balsam.upgradetable.mod.ModCapability;
 import com.balsam.upgradetable.registry.AttributeRegistry;
-import com.balsam.upgradetable.util.ItemStackCache;
-import com.balsam.upgradetable.util.Logger;
 import com.google.common.collect.LinkedListMultimap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Multimap;
-import com.google.gson.Gson;
 import com.google.gson.JsonParseException;
 import com.mojang.brigadier.StringReader;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
@@ -110,7 +109,8 @@ public abstract class MixinItemStack extends CapabilityProvider<ItemStack> imple
     @Inject(at = @At("HEAD"), method = "shrink(I)V", cancellable = true)
     public void shrink(int amount, CallbackInfo callback) {
         ItemStack thisObj = (ItemStack) (Object) this;
-        PlayerEntity player = ItemStackCache.getPlayer(thisObj);
+        AmmoCostCache cache = (AmmoCostCache) CacheFactory.Map.get(AttributeEnum.AMMO_COST);
+        PlayerEntity player = cache.getValue(thisObj);
         if (player == null) return;
 
         ItemStack useItem = player.getUseItem();

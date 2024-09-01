@@ -1,17 +1,15 @@
 package com.balsam.upgradetable;
 
+import com.balsam.upgradetable.cache.CacheFactory;
 import com.balsam.upgradetable.capability.ItemAbilityProvider;
 import com.balsam.upgradetable.capability.itemAbility.*;
-import com.balsam.upgradetable.capability.pojo.ItemAttributePO;
+import com.balsam.upgradetable.config.AttributeEnum;
 import com.balsam.upgradetable.config.Constants;
 import com.balsam.upgradetable.mod.Config;
-import com.balsam.upgradetable.util.ArrowCache;
-import com.balsam.upgradetable.util.Logger;
+import com.balsam.upgradetable.cache.BowDamageCache;
 import net.minecraft.entity.projectile.AbstractArrowEntity;
-import net.minecraft.item.BowItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.TieredItem;
 import net.minecraft.util.IndirectEntityDamageSource;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
@@ -61,12 +59,13 @@ public class BusEventHandler {
             IndirectEntityDamageSource eventSource = (IndirectEntityDamageSource) event.getSource();
             if (eventSource.msgId.equals("arrow") && eventSource.getDirectEntity() instanceof AbstractArrowEntity){
                 AbstractArrowEntity arrowEntity = (AbstractArrowEntity) eventSource.getDirectEntity();
-                Float value = ArrowCache.getValue(arrowEntity);
+                BowDamageCache itemCache = (BowDamageCache) CacheFactory.Map.get(AttributeEnum.BOW_DAMAGE);
+                Float value = itemCache.getValue(arrowEntity);
                 if (value!=null) {
                     //如果没满弦，则伤害降低1/3
                     value = value / (arrowEntity.isCritArrow() ? 1 : 3);
                     event.setAmount(event.getAmount() + value);
-                    ArrowCache.removeValue(arrowEntity);
+                    itemCache.removeValue(arrowEntity);
 //                    Logger.info("额外增加伤害："+value);
                 }
             }

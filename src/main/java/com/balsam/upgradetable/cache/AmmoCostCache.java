@@ -1,35 +1,30 @@
-package com.balsam.upgradetable.util;
+package com.balsam.upgradetable.cache;
 
-import com.balsam.upgradetable.mixin.MixinItemStack;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
+public class AmmoCostCache extends ItemCache<ItemStack, PlayerEntity>{
 
-public class ItemStackCache {
-
-    private static Map<ItemStack, PlayerEntity> cache = new ConcurrentHashMap<>();
-
-    public static void setPlayerCache(PlayerEntity playerEntity){
+    @Override
+    public void setValue(ItemStack itemStack, PlayerEntity playerEntity) {
         for (ItemStack item : playerEntity.inventory.items) {
-            cache.put(item, playerEntity);
+            super.setValue(item, playerEntity);
         }
         for (ItemStack item : playerEntity.inventory.armor) {
-            cache.put(item, playerEntity);
+            super.setValue(item, playerEntity);
         }
         for (ItemStack item : playerEntity.inventory.offhand) {
-            cache.put(item, playerEntity);
+            super.setValue(item, playerEntity);
         }
     }
 
-    public static PlayerEntity getPlayer(ItemStack itemStack){
+    @Override
+    public PlayerEntity getValue(ItemStack itemStack) {
         if (itemStack == ItemStack.EMPTY) return null;
-        return cache.get(itemStack);
+        return super.getValue(itemStack);
     }
 
-    public static void clearPlayerCache(PlayerEntity playerEntity){
+    public void removeValueByPlayer(PlayerEntity playerEntity){
         for (ItemStack itemStack : cache.keySet()) {
             for (ItemStack item : playerEntity.inventory.items) {
                 if (item.equals(itemStack))
@@ -45,5 +40,4 @@ public class ItemStackCache {
             }
         }
     }
-
 }

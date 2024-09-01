@@ -1,4 +1,5 @@
 {
+  "block.upgradetable.upgrade_table_block": "升级台",
   "gui.upgradetable.upgradetable": "升级台",
   "button.upgradetable.upgrade": "升级",
   "attribute.name.upgrade.total": "总等级",

@@ -1,12 +1,13 @@
 package com.balsam.upgradetable.mixin;
 
+import com.balsam.upgradetable.cache.AmmoCostCache;
+import com.balsam.upgradetable.cache.CacheFactory;
+import com.balsam.upgradetable.cache.ItemCache;
 import com.balsam.upgradetable.capability.itemAbility.BaseItemAbility;
 import com.balsam.upgradetable.capability.itemAbility.IItemAbility;
 import com.balsam.upgradetable.config.AttributeEnum;
 import com.balsam.upgradetable.mod.ModCapability;
 import com.balsam.upgradetable.registry.AttributeRegistry;
-import com.balsam.upgradetable.util.ItemStackCache;
-import com.balsam.upgradetable.util.Logger;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
@@ -77,7 +78,8 @@ public abstract class MixinLivingEntity extends Entity {
     private void startUsingItem(Hand hand, CallbackInfo callback) {
         if (!PlayerEntity.class.isAssignableFrom(this.getClass())) return;
         PlayerEntity playerEntity = (PlayerEntity) (Object) this;
-        ItemStackCache.setPlayerCache(playerEntity);
+        AmmoCostCache cache = (AmmoCostCache) CacheFactory.Map.get(AttributeEnum.AMMO_COST);
+        cache.setValue(ItemStack.EMPTY, playerEntity);
     }
 
     /**
@@ -89,7 +91,8 @@ public abstract class MixinLivingEntity extends Entity {
     private void completeUsingItem(CallbackInfo callback) {
         if (!PlayerEntity.class.isAssignableFrom(this.getClass())) return;
         PlayerEntity playerEntity = (PlayerEntity) (Object) this;
-        ItemStackCache.clearPlayerCache(playerEntity);
+        AmmoCostCache cache = (AmmoCostCache) CacheFactory.Map.get(AttributeEnum.AMMO_COST);
+        cache.removeValueByPlayer(playerEntity);
     }
 //
 //    public static void main(String[] args) {

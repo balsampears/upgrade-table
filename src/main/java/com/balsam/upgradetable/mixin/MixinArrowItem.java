@@ -1,11 +1,12 @@
 package com.balsam.upgradetable.mixin;
 
+import com.balsam.upgradetable.cache.CacheFactory;
+import com.balsam.upgradetable.cache.ItemCache;
 import com.balsam.upgradetable.capability.itemAbility.BaseItemAbility;
 import com.balsam.upgradetable.capability.itemAbility.IItemAbility;
-import com.balsam.upgradetable.capability.pojo.ItemAttributePO;
 import com.balsam.upgradetable.config.AttributeEnum;
 import com.balsam.upgradetable.mod.ModCapability;
-import com.balsam.upgradetable.util.ArrowCache;
+import com.balsam.upgradetable.cache.BowDamageCache;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.projectile.AbstractArrowEntity;
 import net.minecraft.item.ArrowItem;
@@ -30,7 +31,8 @@ public class MixinArrowItem {
         capability.ifPresent(o -> {
             BaseItemAbility baseItemAbility = (BaseItemAbility) o;
             baseItemAbility.findAttribute(AttributeEnum.BOW_DAMAGE).ifPresent(attr->{
-                ArrowCache.setValue(callback.getReturnValue(), attr.getValue());
+                BowDamageCache itemCache = (BowDamageCache)CacheFactory.Map.get(AttributeEnum.BOW_DAMAGE);
+                itemCache.setValue(callback.getReturnValue(), attr.getValue());
             });
         });
     }
