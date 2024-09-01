@@ -56,4 +56,12 @@ public class UpgradeTableContainer extends Container {
         }
         return newItemStck;
     }
+
+    @Override
+    public void removed(PlayerEntity playerEntity) {
+        super.removed(playerEntity);
+        if (!playerEntity.level.isClientSide){
+            this.clearContainer(playerEntity, playerEntity.level, blockEntity.getInventory());
+        }
+    }
 }
