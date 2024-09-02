@@ -6,6 +6,6 @@ import net.minecraft.entity.projectile.ProjectileEntity;
 public class ThrowDamageCache extends ItemCache<ProjectileEntity, Float> {
 
     public ThrowDamageCache(){
-        super(true, 5 * 60 * 1000);
+        super(true,  60 * 1000);
     }
 }

@@ -9,5 +9,6 @@
   "attribute.name.upgrade.bow_damage": "额外弓箭伤害",
   "attribute.name.upgrade.bow_arc_time": "拉弓时间降低",
   "attribute.name.upgrade.ammo_cost": "弹药消耗降低",
-  "attribute.name.upgrade.throw_damage": "额外投射伤害"
+  "attribute.name.upgrade.throw_damage": "额外投射伤害",
+  "attribute.name.upgrade.use_cooldown": "冷却缩减"
 }

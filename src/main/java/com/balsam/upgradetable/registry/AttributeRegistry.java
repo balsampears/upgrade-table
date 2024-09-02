@@ -24,5 +24,9 @@ public class AttributeRegistry {
             ()->(new RangedAttribute(AttributeEnum.BOW_ARC_TIME.getName(), 0.0D, 0.0D, 1)).setSyncable(true));
     public static final RegistryObject<Attribute> AmmoCost = ATTRIBUTES.register("upgrade.ammo_cost",
             ()->(new RangedAttribute(AttributeEnum.AMMO_COST.getName(), 0.0D, 0.0D, 1)).setSyncable(true));
+    public static final RegistryObject<Attribute> ThrowDamage = ATTRIBUTES.register("upgrade.throw_damage",
+            ()->(new RangedAttribute(AttributeEnum.THROW_DAMAGE.getName(), 0.0D, 0.0D, 9999)).setSyncable(true));
+    public static final RegistryObject<Attribute> UseCooldown = ATTRIBUTES.register("upgrade.use_cooldown",
+            ()->(new RangedAttribute(AttributeEnum.USE_COOLDOWN.getName(), 0.0D, 0.0D, 1)).setSyncable(true));
 
 }
