@@ -1,13 +1,16 @@
 package com.balsam.upgradetable;
 
 import com.balsam.upgradetable.cache.CacheFactory;
+import com.balsam.upgradetable.cache.ThrowDamageCache;
 import com.balsam.upgradetable.capability.ItemAbilityProvider;
 import com.balsam.upgradetable.capability.itemAbility.*;
 import com.balsam.upgradetable.config.AttributeEnum;
 import com.balsam.upgradetable.config.Constants;
-import com.balsam.upgradetable.mod.Config;
+import com.balsam.upgradetable.mod.ModConfig;
 import com.balsam.upgradetable.cache.BowDamageCache;
+import com.balsam.upgradetable.util.Logger;
 import net.minecraft.entity.projectile.AbstractArrowEntity;
+import net.minecraft.entity.projectile.ThrowableEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IndirectEntityDamageSource;
@@ -34,10 +37,10 @@ public class BusEventHandler {
 //        else if (item instanceof BowItem) {
 //            itemAbility = new BowItemAbility();
 //        }
-        Map<Class<?>, Config.ConfigItem> configMap = Config.getConfigMap();
-        ListIterator<Map.Entry<Class<?>, Config.ConfigItem>> listIterator = new ArrayList<>(configMap.entrySet()).listIterator(configMap.size());
+        Map<Class<?>, ModConfig.ConfigItem> configMap = ModConfig.getConfigMap();
+        ListIterator<Map.Entry<Class<?>, ModConfig.ConfigItem>> listIterator = new ArrayList<>(configMap.entrySet()).listIterator(configMap.size());
         while (listIterator.hasPrevious()){
-            Map.Entry<Class<?>, Config.ConfigItem> entry = listIterator.previous();
+            Map.Entry<Class<?>, ModConfig.ConfigItem> entry = listIterator.previous();
             if (entry.getKey()!=null && entry.getKey().isAssignableFrom(item.getClass())){
                 itemAbility = new ConfigItemAbility(entry.getValue());
                 break;
@@ -57,6 +60,7 @@ public class BusEventHandler {
     public static void onLivingHurtEvent(LivingHurtEvent event){
         if (event.getSource() instanceof IndirectEntityDamageSource){
             IndirectEntityDamageSource eventSource = (IndirectEntityDamageSource) event.getSource();
+            //额外弓箭伤害
             if (eventSource.msgId.equals("arrow") && eventSource.getDirectEntity() instanceof AbstractArrowEntity){
                 AbstractArrowEntity arrowEntity = (AbstractArrowEntity) eventSource.getDirectEntity();
                 BowDamageCache itemCache = (BowDamageCache) CacheFactory.Map.get(AttributeEnum.BOW_DAMAGE);
@@ -66,7 +70,18 @@ public class BusEventHandler {
                     value = value / (arrowEntity.isCritArrow() ? 1 : 3);
                     event.setAmount(event.getAmount() + value);
                     itemCache.removeValue(arrowEntity);
-//                    Logger.info("额外增加伤害："+value);
+                    Logger.info("额外增加伤害："+value);
+                }
+            }
+            //额外投射伤害
+            else if (eventSource.getDirectEntity() instanceof ThrowableEntity){
+                ThrowableEntity throwableEntity = (ThrowableEntity) eventSource.getDirectEntity();
+                ThrowDamageCache itemCache = (ThrowDamageCache) CacheFactory.Map.get(AttributeEnum.BOW_DAMAGE);
+                Float value = itemCache.getValue(throwableEntity);
+                if (value!=null){
+                    event.setAmount(event.getAmount() + value);
+                    itemCache.removeValue(throwableEntity);
+                    Logger.info("额外增加伤害："+value);
                 }
             }
         }

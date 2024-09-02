@@ -1,12 +1,11 @@
 package com.balsam.upgradetable;
 
 import com.balsam.upgradetable.config.Constants;
-import com.balsam.upgradetable.mod.Config;
+import com.balsam.upgradetable.mod.ModConfig;
 import com.balsam.upgradetable.registry.*;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
 @Mod(Constants.MOD_ID)
@@ -20,7 +19,7 @@ public class Main {
         ContainerTypeRegistry.CONTAINERS.register(bus);
         AttributeRegistry.ATTRIBUTES.register(bus);
 
-        ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, Config.COMMON_CONFIG);
+        ModLoadingContext.get().registerConfig(net.minecraftforge.fml.config.ModConfig.Type.COMMON, ModConfig.COMMON_CONFIG);
 
     }
 }

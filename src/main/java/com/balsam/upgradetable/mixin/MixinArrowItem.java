@@ -21,21 +21,21 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(ArrowItem.class)
 public class MixinArrowItem {
 
-    /**
-     * 实现能力：额外弓箭伤害
-     */
-    @Inject(at = @At("RETURN"), method = "createArrow(Lnet/minecraft/world/World;Lnet/minecraft/item/ItemStack;Lnet/minecraft/entity/LivingEntity;)Lnet/minecraft/entity/projectile/AbstractArrowEntity;", cancellable = true)
-    private void createArrow(World world, ItemStack itemStack, LivingEntity livingEntity, CallbackInfoReturnable<AbstractArrowEntity> callback) {
-        ItemStack useItem = livingEntity.getUseItem();
-        LazyOptional<IItemAbility> capability = useItem.getCapability(ModCapability.itemAbility);
-        capability.ifPresent(o -> {
-            BaseItemAbility baseItemAbility = (BaseItemAbility) o;
-            baseItemAbility.findAttribute(AttributeEnum.BOW_DAMAGE).ifPresent(attr->{
-                BowDamageCache itemCache = (BowDamageCache)CacheFactory.Map.get(AttributeEnum.BOW_DAMAGE);
-                itemCache.setValue(callback.getReturnValue(), attr.getValue());
-            });
-        });
-    }
+//    /**
+//     * 实现能力：额外弓箭伤害
+//     */
+//    @Inject(at = @At("RETURN"), method = "createArrow(Lnet/minecraft/world/World;Lnet/minecraft/item/ItemStack;Lnet/minecraft/entity/LivingEntity;)Lnet/minecraft/entity/projectile/AbstractArrowEntity;", cancellable = true)
+//    private void createArrow(World world, ItemStack itemStack, LivingEntity livingEntity, CallbackInfoReturnable<AbstractArrowEntity> callback) {
+//        ItemStack useItem = livingEntity.getUseItem();
+//        LazyOptional<IItemAbility> capability = useItem.getCapability(ModCapability.itemAbility);
+//        capability.ifPresent(o -> {
+//            BaseItemAbility baseItemAbility = (BaseItemAbility) o;
+//            baseItemAbility.findAttribute(AttributeEnum.BOW_DAMAGE).ifPresent(attr->{
+//                BowDamageCache itemCache = (BowDamageCache)CacheFactory.Map.get(AttributeEnum.BOW_DAMAGE);
+//                itemCache.setValue(callback.getReturnValue(), attr.getValue());
+//            });
+//        });
+//    }
 
 //    /**
 //     * 实现能力：弓额外力量

@@ -11,7 +11,7 @@ import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-public class Config {
+public class ModConfig {
 
 
     public static ForgeConfigSpec COMMON_CONFIG;

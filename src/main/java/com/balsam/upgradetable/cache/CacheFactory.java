@@ -12,5 +12,6 @@ public class CacheFactory {
     static {
         Map.put(AttributeEnum.AMMO_COST, new AmmoCostCache());
         Map.put(AttributeEnum.BOW_DAMAGE, new BowDamageCache());
+        Map.put(AttributeEnum.THROW_DAMAGE, new ThrowDamageCache());
     }
 }

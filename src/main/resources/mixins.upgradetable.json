@@ -7,7 +7,8 @@
     "MixinAttributeModifierManager",
     "MixinItemStack",
     "MixinLivingEntity",
-    "MixinArrowItem"
+    "MixinArrowItem",
+    "MixinProjectileEntity"
   ],
   "minVersion": "0.8"
 }

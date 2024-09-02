@@ -112,6 +112,11 @@ public class UpgradeTableTileEntity extends TileEntity implements INamedContaine
                                         AttributeEnum.AMMO_COST.getUuid(), "Weapon Attribute", attribute.getValue(), AttributeModifier.Operation.MULTIPLY_BASE),
                                 EquipmentSlotType.MAINHAND);
                         break;
+                    case THROW_DAMAGE:
+                        ItemStackUtil.addOrUpdateAttributeModifier(itemStack, AttributeRegistry.AmmoCost.get(), new AttributeModifier(
+                                        AttributeEnum.THROW_DAMAGE.getUuid(), "Weapon Attribute", attribute.getValue(), AttributeModifier.Operation.ADDITION),
+                                EquipmentSlotType.MAINHAND);
+                        break;
                     case MAX_DURATION:
                         maxDuration += attribute.getValue();
                         break;

@@ -22,6 +22,9 @@ public enum AttributeEnum {
     BOW_ARC_TIME("attribute.name.upgrade.bow_arc_time","bowArcTime","FA233E1C-4180-4865-B01B-BCCE9785ACB2"),
     //弹药消耗降低
     AMMO_COST("attribute.name.upgrade.ammo_cost","ammoCost","FA233E1C-4180-4865-B01B-BCCE9785ACB2"),
+    //额外投射伤害
+    THROW_DAMAGE("attribute.name.upgrade.throw_demage","throwDamage","FA233E1C-4180-4865-B01B-BCCE9785ACB3"),
+
     ;
 
     /**
