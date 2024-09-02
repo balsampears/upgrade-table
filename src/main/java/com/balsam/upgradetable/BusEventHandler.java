@@ -70,18 +70,18 @@ public class BusEventHandler {
                     value = value / (arrowEntity.isCritArrow() ? 1 : 3);
                     event.setAmount(event.getAmount() + value);
                     itemCache.removeValue(arrowEntity);
-                    Logger.info("额外增加伤害："+value);
+//                    Logger.info("额外增加伤害："+value);
                 }
             }
             //额外投射伤害
             else if (eventSource.getDirectEntity() instanceof ThrowableEntity){
                 ThrowableEntity throwableEntity = (ThrowableEntity) eventSource.getDirectEntity();
-                ThrowDamageCache itemCache = (ThrowDamageCache) CacheFactory.Map.get(AttributeEnum.BOW_DAMAGE);
+                ThrowDamageCache itemCache = (ThrowDamageCache) CacheFactory.Map.get(AttributeEnum.THROW_DAMAGE);
                 Float value = itemCache.getValue(throwableEntity);
                 if (value!=null){
                     event.setAmount(event.getAmount() + value);
                     itemCache.removeValue(throwableEntity);
-                    Logger.info("额外增加伤害："+value);
+//                    Logger.info("额外增加伤害："+value);
                 }
             }
         }

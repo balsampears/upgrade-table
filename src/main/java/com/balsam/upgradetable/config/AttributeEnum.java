@@ -23,7 +23,7 @@ public enum AttributeEnum {
     //弹药消耗降低
     AMMO_COST("attribute.name.upgrade.ammo_cost","ammoCost","FA233E1C-4180-4865-B01B-BCCE9785ACB2"),
     //额外投射伤害
-    THROW_DAMAGE("attribute.name.upgrade.throw_demage","throwDamage","FA233E1C-4180-4865-B01B-BCCE9785ACB3"),
+    THROW_DAMAGE("attribute.name.upgrade.throw_damage","throwDamage","FA233E1C-4180-4865-B01B-BCCE9785ACB3"),
 
     ;
 
