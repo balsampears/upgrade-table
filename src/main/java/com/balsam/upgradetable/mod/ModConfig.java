@@ -94,6 +94,28 @@ public class ModConfig {
                 configItem.values3 = builder.define("values3", arrayToString(new Integer[]{100,200,300,400,500,600}));
                 configItem.reduceDuration3 = builder.defineInRange("reduceDuration3", 0,0,Integer.MAX_VALUE);
             }
+            else if (i==2) {
+                configItem.targetClass = builder.define("targetClass", "net.minecraft.item.CrossbowItem");
+                configItem.name0 = builder.defineEnum("name0", AttributeEnum.BOW_DAMAGE);
+                configItem.maxLevel0 = builder.defineInRange("maxLevel0", Constants.MAX_LEVEL_PER_ABILITY,0,99);
+                configItem.values0 = builder.define("values0", arrayToString(new Float[]{0.80f,2.08f,3.84f,6.08f,8.80f,12.00f}));
+                configItem.reduceDuration0 = builder.defineInRange("reduceDuration0", 50,0,Integer.MAX_VALUE);
+
+                configItem.name1 = builder.defineEnum("name1", AttributeEnum.BOW_ARC_TIME);
+                configItem.maxLevel1 = builder.defineInRange("maxLevel1", Constants.MAX_LEVEL_PER_ABILITY,0,99);
+                configItem.values1 = builder.define("values1", arrayToString(new Float[]{0.05f, 0.14f, 0.25f, 0.4f, 0.58f, 0.8f}));
+                configItem.reduceDuration1 = builder.defineInRange("reduceDuration1", 50,0,Integer.MAX_VALUE);
+
+                configItem.name2 = builder.defineEnum("name2", AttributeEnum.AMMO_COST);
+                configItem.maxLevel2 = builder.defineInRange("maxLevel2", Constants.MAX_LEVEL_PER_ABILITY,0,99);
+                configItem.values2 = builder.define("values2", arrayToString(new Float[]{0.02f, 0.05f, 0.1f, 0.15f, 0.5f, 0.8f}));
+                configItem.reduceDuration2 = builder.defineInRange("reduceDuration2", 50,0,Integer.MAX_VALUE);
+
+                configItem.name3 = builder.defineEnum("name3", AttributeEnum.MAX_DURATION);
+                configItem.maxLevel3 = builder.defineInRange("maxLevel3", Constants.MAX_LEVEL_PER_ABILITY,0,99);
+                configItem.values3 = builder.define("values3", arrayToString(new Integer[]{100,200,300,400,500,600}));
+                configItem.reduceDuration3 = builder.defineInRange("reduceDuration3", 0,0,Integer.MAX_VALUE);
+            }
             else {
                 configItem.targetClass = builder.define("targetClass", "");
                 configItem.name0 = builder.defineEnum("name0", AttributeEnum.NULL);

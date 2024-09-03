@@ -15,6 +15,7 @@ import net.minecraft.entity.ai.attributes.AttributeModifierMap;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.BowItem;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.ShootableItem;
 import net.minecraft.util.Hand;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.LazyOptional;
@@ -43,7 +44,7 @@ public abstract class MixinLivingEntity extends Entity {
     @Inject(at = @At("HEAD"), method = "getUseItemRemainingTicks()I", cancellable = true)
     public void getUseItemRemainingTicks(CallbackInfoReturnable<Integer> callback) {
         ItemStack useItem = getUseItem();
-        if (!(useItem.getItem() instanceof BowItem)) return;
+        if (!(useItem.getItem() instanceof ShootableItem)) return;
         LazyOptional<IItemAbility> capability = useItem.getCapability(ModCapability.itemAbility);
         capability.ifPresent(o -> {
             BaseItemAbility baseItemAbility = (BaseItemAbility) o;
