@@ -6,13 +6,17 @@ import com.balsam.upgradetable.capability.ItemAbilityProvider;
 import com.balsam.upgradetable.capability.itemAbility.*;
 import com.balsam.upgradetable.config.AttributeEnum;
 import com.balsam.upgradetable.config.Constants;
+import com.balsam.upgradetable.mod.ModCapability;
 import com.balsam.upgradetable.mod.ModConfig;
 import com.balsam.upgradetable.cache.BowDamageCache;
+import com.balsam.upgradetable.util.ItemStackUtil;
 import com.balsam.upgradetable.util.Logger;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.projectile.AbstractArrowEntity;
 import net.minecraft.entity.projectile.ThrowableEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.DamageSource;
 import net.minecraft.util.IndirectEntityDamageSource;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
@@ -49,7 +53,7 @@ public class BusEventHandler {
     }
 
     /**
-     * 实现功能：额外弓箭伤害、额外投射伤害
+     * 实现功能：额外弓箭伤害、额外投射伤害、额外攻击伤害
      */
     @SubscribeEvent
     public static void onLivingHurtEvent(LivingHurtEvent event){
@@ -78,6 +82,18 @@ public class BusEventHandler {
                     itemCache.removeValue(throwableEntity);
 //                    Logger.info("额外增加伤害："+value);
                 }
+            }
+        } else if (event.getSource() instanceof DamageSource){
+            //额外攻击伤害
+            DamageSource source = event.getSource();
+            if (source.getDirectEntity() instanceof LivingEntity){
+                ItemStack useItem = ItemStackUtil.getUseItem((LivingEntity) source.getDirectEntity());
+                if (useItem == ItemStack.EMPTY) return;
+                useItem.getCapability(ModCapability.itemAbility).ifPresent(o->{
+                    ((BaseItemAbility)o).findAttribute(AttributeEnum.ATTACK_DAMAGE).ifPresent(attr->{
+                        event.setAmount(event.getAmount() + attr.getValue());
+                    });
+                });
             }
         }
     }
