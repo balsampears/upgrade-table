@@ -13,6 +13,7 @@ import com.balsam.upgradetable.registry.TileEntityTypeRegistry;
 import com.balsam.upgradetable.util.ItemStackUtil;
 import com.balsam.upgradetable.util.Logger;
 import com.google.common.collect.Multimap;
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.ai.attributes.Attribute;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.player.PlayerEntity;
@@ -155,7 +156,8 @@ public class UpgradeTableTileEntity extends TileEntity implements INamedContaine
             return null;
         }
         //消耗材料校验
-        if (inventory.getItem(1).getItem() != inventory.getItem(0).getItem()) return null;
+        if (!Minecraft.getInstance().player.isCreative()
+                && inventory.getItem(1).getItem() != inventory.getItem(0).getItem()) return null;
         return targetAttribute;
     }
 

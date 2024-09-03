@@ -8,20 +8,16 @@ import com.balsam.upgradetable.capability.pojo.ItemAttributePO;
 import com.balsam.upgradetable.config.AttributeEnum;
 import com.balsam.upgradetable.config.Constants;
 import com.balsam.upgradetable.mod.ModCapability;
-import com.balsam.upgradetable.network.Networking;
-import com.balsam.upgradetable.network.pack.UpgradeButtonPack;
 import com.mojang.blaze3d.matrix.MatrixStack;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.inventory.ContainerScreen;
 import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.server.command.TextComponentHelper;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -93,8 +89,8 @@ public class UpgradeTableScreen extends ContainerScreen<UpgradeTableContainer> {
                         textComponent.append(String.format(" +%.2f -> +%.2f", attribute.getValue(), attribute.getNextLevelValue()));
                         //渲染按钮
                         if (i - 1 >=0 && i-1 < upgradeButtons.size()) {
-                            boolean active = attribute.canUpgrade() && base.getTotal().canUpgrade()
-                                    && materialItemStack.getItem().equals(itemStack.getItem());
+                            boolean active = attribute.canUpgrade() && base.getTotal().canUpgrade();
+                            active = active && (Minecraft.getInstance().player.isCreative() || materialItemStack.getItem().equals(itemStack.getItem()));
                             if (attribute.getAttributeEnum()!=AttributeEnum.MAX_DURATION)
                                 active = active && itemStack.getMaxDamage() - attribute.getPerLevelReduceDuration() > 0;
                             buttonActiveMap.put(i - 1, active);
