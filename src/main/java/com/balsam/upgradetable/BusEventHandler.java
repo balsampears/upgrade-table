@@ -31,12 +31,7 @@ public class BusEventHandler {
         Item item = event.getObject().getItem();
         IItemAbility itemAbility = null;
 
-//        if (item instanceof TieredItem) {
-//            itemAbility = new TieredItemAbility();
-//        }
-//        else if (item instanceof BowItem) {
-//            itemAbility = new BowItemAbility();
-//        }
+        //读取配置文件，倒序匹配class
         Map<Class<?>, ModConfig.ConfigItem> configMap = ModConfig.getConfigMap();
         ListIterator<Map.Entry<Class<?>, ModConfig.ConfigItem>> listIterator = new ArrayList<>(configMap.entrySet()).listIterator(configMap.size());
         while (listIterator.hasPrevious()){
@@ -54,7 +49,7 @@ public class BusEventHandler {
     }
 
     /**
-     * 实现功能：额外弓箭伤害
+     * 实现功能：额外弓箭伤害、额外投射伤害
      */
     @SubscribeEvent
     public static void onLivingHurtEvent(LivingHurtEvent event){

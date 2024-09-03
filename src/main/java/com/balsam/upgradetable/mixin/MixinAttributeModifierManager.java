@@ -20,7 +20,7 @@ public abstract class MixinAttributeModifierManager {
     private AttributeModifierMap supplier;
 
     /**
-     * 将能力进行实现
+     * 实现功能：额外攻击伤害、额外攻击速度
      */
     @Inject(at = @At("RETURN"), method = "getValue(Lnet/minecraft/entity/ai/attributes/Attribute;)D", cancellable = true)
     private void getValue(Attribute attribute, CallbackInfoReturnable<Double> callback){

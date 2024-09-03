@@ -70,9 +70,6 @@ public abstract class MixinLivingEntity extends Entity {
 
     /**
      * 当使用物品时，给玩家物品库存的所有物品设置当前玩家
-     *
-     * @param hand
-     * @param callback
      */
     @Inject(at = @At("RETURN"), method = "startUsingItem(Lnet/minecraft/util/Hand;)V")
     private void startUsingItem(Hand hand, CallbackInfo callback) {
@@ -84,8 +81,6 @@ public abstract class MixinLivingEntity extends Entity {
 
     /**
      * 当结束使用时，设置当前玩家为空
-     *
-     * @param callback
      */
     @Inject(at = @At("RETURN"), method = "completeUsingItem()V")
     private void completeUsingItem(CallbackInfo callback) {
@@ -94,8 +89,4 @@ public abstract class MixinLivingEntity extends Entity {
         AmmoCostCache cache = (AmmoCostCache) CacheFactory.Map.get(AttributeEnum.AMMO_COST);
         cache.removeValueByPlayer(playerEntity);
     }
-//
-//    public static void main(String[] args) {
-//        System.out.println(PlayerEntity.class.isAssignableFrom(MixinLivingEntity.class));
-//    }
 }

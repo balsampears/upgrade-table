@@ -55,7 +55,7 @@ public abstract class MixinCooldownTracker{
                         float newTimesFloat = 20 * times / (20 + times * attr.getValue());
                         //小数位通过随机法判定是否缩减
                         newTimes = (int) newTimesFloat + (newTimesFloat % 1 < RandomUtils.nextFloat(0, 1) ? 1 : 0);
-                        Logger.info(String.format("冷却缩减：%f, 延迟：%d -> %d", attr.getValue(), times, newTimes));
+//                        Logger.info(String.format("冷却缩减：%f, 延迟：%d -> %d", attr.getValue(), times, newTimes));
                     }
                 }
             }

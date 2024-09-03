@@ -22,6 +22,9 @@ import javax.annotation.Nullable;
 @Mixin(ProjectileEntity.class)
 public class MixinProjectileEntity {
 
+    /**
+     * 实现功能：额外弓箭伤害、额外投射伤害
+     */
     @Inject(at=@At("RETURN"), method = "setOwner(Lnet/minecraft/entity/Entity;)V")
     public void setOwner(Entity entity, CallbackInfo callbackInfo){
         if (!(entity instanceof LivingEntity)) return;
