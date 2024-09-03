@@ -61,12 +61,12 @@ public class BusEventHandler {
         if (event.getSource() instanceof IndirectEntityDamageSource){
             IndirectEntityDamageSource eventSource = (IndirectEntityDamageSource) event.getSource();
             //额外弓箭伤害
-            if (eventSource.msgId.equals("arrow") && eventSource.getDirectEntity() instanceof AbstractArrowEntity){
+            if (eventSource.getDirectEntity() instanceof AbstractArrowEntity){
                 AbstractArrowEntity arrowEntity = (AbstractArrowEntity) eventSource.getDirectEntity();
                 BowDamageCache itemCache = (BowDamageCache) CacheFactory.Map.get(AttributeEnum.BOW_DAMAGE);
                 Float value = itemCache.getValue(arrowEntity);
                 if (value!=null) {
-                    //如果没满弦，则伤害降低1/3
+                    //如果没满弦，则伤害降低到1/3
                     value = value / (arrowEntity.isCritArrow() ? 1 : 3);
                     event.setAmount(event.getAmount() + value);
                     itemCache.removeValue(arrowEntity);

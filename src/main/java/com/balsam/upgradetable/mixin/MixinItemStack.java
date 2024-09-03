@@ -8,6 +8,7 @@ import com.balsam.upgradetable.capability.pojo.ItemAttributePO;
 import com.balsam.upgradetable.config.AttributeEnum;
 import com.balsam.upgradetable.mod.ModCapability;
 import com.balsam.upgradetable.registry.AttributeRegistry;
+import com.balsam.upgradetable.util.ItemStackUtil;
 import com.google.common.collect.LinkedListMultimap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Multimap;
@@ -113,7 +114,7 @@ public abstract class MixinItemStack extends CapabilityProvider<ItemStack> imple
         PlayerEntity player = cache.getValue(thisObj);
         if (player == null) return;
 
-        ItemStack useItem = player.getUseItem();
+        ItemStack useItem = ItemStackUtil.getUseItem(player);
         if (useItem == ItemStack.EMPTY) return;
 
         LazyOptional<IItemAbility> capability = useItem.getCapability(ModCapability.itemAbility);

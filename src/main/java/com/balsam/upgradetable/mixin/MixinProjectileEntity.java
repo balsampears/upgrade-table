@@ -7,6 +7,7 @@ import com.balsam.upgradetable.cache.ThrowDamageCache;
 import com.balsam.upgradetable.capability.itemAbility.BaseItemAbility;
 import com.balsam.upgradetable.config.AttributeEnum;
 import com.balsam.upgradetable.mod.ModCapability;
+import com.balsam.upgradetable.util.ItemStackUtil;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.projectile.ProjectileEntity;
@@ -26,7 +27,7 @@ public class MixinProjectileEntity {
         if (!(entity instanceof LivingEntity)) return;
         ProjectileEntity thisObj = (ProjectileEntity) (Object) this;
         LivingEntity livingEntity = (LivingEntity) entity;
-        ItemStack useItem = livingEntity.getUseItem();
+        ItemStack useItem = ItemStackUtil.getUseItem(livingEntity);
         useItem.getCapability(ModCapability.itemAbility).ifPresent(o->{
             BaseItemAbility baseItemAbility = (BaseItemAbility) o;
             //弓箭伤害

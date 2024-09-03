@@ -1,5 +1,6 @@
 package com.balsam.upgradetable.util;
 
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.attributes.Attribute;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.inventory.EquipmentSlotType;
@@ -10,6 +11,20 @@ import net.minecraftforge.registries.ForgeRegistries;
 import org.apache.commons.lang3.StringUtils;
 
 public class ItemStackUtil {
+
+    /**
+     * 获取使用中的物品
+     * @param livingEntity
+     * @return
+     */
+    public static ItemStack getUseItem(LivingEntity livingEntity){
+        ItemStack useItem = livingEntity.getUseItem();
+        if (useItem == ItemStack.EMPTY)
+            useItem = livingEntity.getMainHandItem();
+        if (useItem == ItemStack.EMPTY)
+            useItem = livingEntity.getOffhandItem();
+        return useItem;
+    }
 
     /**
      * 新增或更新IItemAbility的属性
@@ -40,6 +55,12 @@ public class ItemStackUtil {
         }
     }
 
+    /**
+     * 移除attribute
+     * @param itemStack
+     * @param attribute
+     * @param slotType
+     */
     public static void removeAttributeModifier(ItemStack itemStack, Attribute attribute, EquipmentSlotType slotType) {
         ListNBT attributeModifiers = (ListNBT) itemStack.getOrCreateTag().get("AttributeModifiers");
         removeAttributeModifier(attributeModifiers, attribute, slotType);

@@ -5,6 +5,7 @@ import com.balsam.upgradetable.capability.itemAbility.IItemAbility;
 import com.balsam.upgradetable.capability.pojo.ItemAttributePO;
 import com.balsam.upgradetable.config.AttributeEnum;
 import com.balsam.upgradetable.mod.ModCapability;
+import com.balsam.upgradetable.util.ItemStackUtil;
 import com.balsam.upgradetable.util.Logger;
 import com.google.common.collect.Maps;
 import net.minecraft.entity.LivingEntity;
@@ -40,7 +41,7 @@ public abstract class MixinCooldownTracker{
         ServerCooldownTracker thisObj = (ServerCooldownTracker) (Object) this;
         callbackInfo.cancel();
 
-        ItemStack useItem = thisObj.player.getUseItem();
+        ItemStack useItem = ItemStackUtil.getUseItem(thisObj.player);
         int newTimes = times;
         if (useItem != ItemStack.EMPTY) {
             LazyOptional<IItemAbility> capability = useItem.getCapability(ModCapability.itemAbility);
