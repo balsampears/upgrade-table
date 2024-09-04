@@ -1,6 +1,6 @@
 {
   "required": true,
-  "package": "com.balsam.upgradetable.mixin",
+  "package": "com.balsam.upgradetable.mixin.target",
   "compatibilityLevel": "JAVA_8",
   "refmap": "mixins.upgradetable.refmap.json",
   "mixins": [

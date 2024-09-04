@@ -1,11 +1,10 @@
-package com.balsam.upgradetable.mixin;
+package com.balsam.upgradetable.mixin.target;
 
-import com.balsam.upgradetable.cache.AmmoCostCache;
-import com.balsam.upgradetable.cache.CacheFactory;
 import com.balsam.upgradetable.capability.itemAbility.BaseItemAbility;
 import com.balsam.upgradetable.capability.itemAbility.IItemAbility;
 import com.balsam.upgradetable.capability.pojo.ItemAttributePO;
 import com.balsam.upgradetable.config.AttributeEnum;
+import com.balsam.upgradetable.mixin.interfaces.IUsingItemStack;
 import com.balsam.upgradetable.mod.ModCapability;
 import com.balsam.upgradetable.registry.AttributeRegistry;
 import com.balsam.upgradetable.util.ItemStackUtil;
@@ -49,11 +48,14 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Mixin(ItemStack.class)
-public abstract class MixinItemStack extends CapabilityProvider<ItemStack> implements IForgeItemStack {
+public abstract class MixinItemStack extends CapabilityProvider<ItemStack> implements IForgeItemStack, IUsingItemStack {
 
     protected MixinItemStack(Class<ItemStack> baseClass) {
         super(baseClass);
@@ -99,19 +101,28 @@ public abstract class MixinItemStack extends CapabilityProvider<ItemStack> imple
     @Shadow
     public abstract int getMaxDamage();
 
-    private Random random = new Random();
+    private PlayerEntity usingPlayer;
+
+    @Override
+    public void setUsingPlayer(PlayerEntity usingPlayer) {
+        this.usingPlayer = usingPlayer;
+    }
+
+    @Override
+    public PlayerEntity getUsingPlayer() {
+        return usingPlayer;
+    }
 
     /**
      * 实现能力：消耗降低
      * 思路：当玩家使用物品时会将物品和玩家绑定，并添加在缓存ItemStackCache；
-     *      如果在使用物品时，出现玩家库存减少，说明是弹药。检查使用中的物品的能力和消耗降低等级，使用随机数判断是否取消减少弹药的行为
-     *      当玩家使用完物品，清空缓存
+     * 如果在使用物品时，出现玩家库存减少，说明是弹药。检查使用中的物品的能力和消耗降低等级，使用随机数判断是否取消减少弹药的行为
+     * 当玩家使用完物品，清空缓存
      */
     @Inject(at = @At("HEAD"), method = "shrink(I)V", cancellable = true)
     public void shrink(int amount, CallbackInfo callback) {
         ItemStack thisObj = (ItemStack) (Object) this;
-        AmmoCostCache cache = (AmmoCostCache) CacheFactory.Map.get(AttributeEnum.AMMO_COST);
-        PlayerEntity player = cache.getValue(thisObj);
+        PlayerEntity player = this.getUsingPlayer();
         if (player == null) return;
 
         ItemStack useItem = ItemStackUtil.getUseItem(player);
@@ -148,7 +159,7 @@ public abstract class MixinItemStack extends CapabilityProvider<ItemStack> imple
             if (thisObj.equals(serverPlayer.inventory.items.get(i)))
                 index = i;
         }
-        if (index!=null) return index;
+        if (index != null) return index;
         for (int i = 0; i < serverPlayer.inventory.offhand.size(); i++) {
             if (thisObj.equals(serverPlayer.inventory.offhand.get(i)))
                 index = i;

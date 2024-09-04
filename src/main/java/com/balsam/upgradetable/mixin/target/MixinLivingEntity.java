@@ -1,11 +1,9 @@
-package com.balsam.upgradetable.mixin;
+package com.balsam.upgradetable.mixin.target;
 
-import com.balsam.upgradetable.cache.AmmoCostCache;
-import com.balsam.upgradetable.cache.CacheFactory;
-import com.balsam.upgradetable.cache.ItemCache;
 import com.balsam.upgradetable.capability.itemAbility.BaseItemAbility;
 import com.balsam.upgradetable.capability.itemAbility.IItemAbility;
 import com.balsam.upgradetable.config.AttributeEnum;
+import com.balsam.upgradetable.mixin.interfaces.IUsingItemStack;
 import com.balsam.upgradetable.mod.ModCapability;
 import com.balsam.upgradetable.registry.AttributeRegistry;
 import net.minecraft.entity.Entity;
@@ -13,7 +11,6 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.attributes.AttributeModifierMap;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.BowItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ShootableItem;
 import net.minecraft.util.Hand;
@@ -76,8 +73,16 @@ public abstract class MixinLivingEntity extends Entity {
     private void startUsingItem(Hand hand, CallbackInfo callback) {
         if (!PlayerEntity.class.isAssignableFrom(this.getClass())) return;
         PlayerEntity playerEntity = (PlayerEntity) (Object) this;
-        AmmoCostCache cache = (AmmoCostCache) CacheFactory.Map.get(AttributeEnum.AMMO_COST);
-        cache.setValue(ItemStack.EMPTY, playerEntity);
+
+        for (ItemStack item : playerEntity.inventory.items) {
+            ((IUsingItemStack)(Object)item).setUsingPlayer(playerEntity);
+        }
+        for (ItemStack item : playerEntity.inventory.armor) {
+            ((IUsingItemStack)(Object)item).setUsingPlayer(playerEntity);
+        }
+        for (ItemStack item : playerEntity.inventory.offhand) {
+            ((IUsingItemStack)(Object)item).setUsingPlayer(playerEntity);
+        }
     }
 
     /**
@@ -87,7 +92,14 @@ public abstract class MixinLivingEntity extends Entity {
     private void completeUsingItem(CallbackInfo callback) {
         if (!PlayerEntity.class.isAssignableFrom(this.getClass())) return;
         PlayerEntity playerEntity = (PlayerEntity) (Object) this;
-        AmmoCostCache cache = (AmmoCostCache) CacheFactory.Map.get(AttributeEnum.AMMO_COST);
-        cache.removeValueByPlayer(playerEntity);
+        for (ItemStack item : playerEntity.inventory.items) {
+            ((IUsingItemStack)(Object)item).setUsingPlayer(null);
+        }
+        for (ItemStack item : playerEntity.inventory.armor) {
+            ((IUsingItemStack)(Object)item).setUsingPlayer(null);
+        }
+        for (ItemStack item : playerEntity.inventory.offhand) {
+            ((IUsingItemStack)(Object)item).setUsingPlayer(null);
+        }
     }
 }

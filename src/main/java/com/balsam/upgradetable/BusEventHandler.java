@@ -1,16 +1,13 @@
 package com.balsam.upgradetable;
 
-import com.balsam.upgradetable.cache.CacheFactory;
-import com.balsam.upgradetable.cache.ThrowDamageCache;
 import com.balsam.upgradetable.capability.ItemAbilityProvider;
 import com.balsam.upgradetable.capability.itemAbility.*;
 import com.balsam.upgradetable.config.AttributeEnum;
 import com.balsam.upgradetable.config.Constants;
+import com.balsam.upgradetable.mixin.interfaces.IExtraDamage;
 import com.balsam.upgradetable.mod.ModCapability;
 import com.balsam.upgradetable.mod.ModConfig;
-import com.balsam.upgradetable.cache.BowDamageCache;
 import com.balsam.upgradetable.util.ItemStackUtil;
-import com.balsam.upgradetable.util.Logger;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.projectile.AbstractArrowEntity;
 import net.minecraft.entity.projectile.ThrowableEntity;
@@ -62,24 +59,20 @@ public class BusEventHandler {
             //额外弓箭伤害
             if (eventSource.getDirectEntity() instanceof AbstractArrowEntity){
                 AbstractArrowEntity arrowEntity = (AbstractArrowEntity) eventSource.getDirectEntity();
-                BowDamageCache itemCache = (BowDamageCache) CacheFactory.Map.get(AttributeEnum.BOW_DAMAGE);
-                Float value = itemCache.getValue(arrowEntity);
+                Float value = ((IExtraDamage)arrowEntity).getExtraDamage();
                 if (value!=null) {
                     //如果没满弦，则伤害降低到1/3
                     value = value / (arrowEntity.isCritArrow() ? 1 : 3);
                     event.setAmount(event.getAmount() + value);
-                    itemCache.removeValue(arrowEntity);
 //                    Logger.info("额外增加伤害："+value);
                 }
             }
             //额外投射伤害
             else if (eventSource.getDirectEntity() instanceof ThrowableEntity){
                 ThrowableEntity throwableEntity = (ThrowableEntity) eventSource.getDirectEntity();
-                ThrowDamageCache itemCache = (ThrowDamageCache) CacheFactory.Map.get(AttributeEnum.THROW_DAMAGE);
-                Float value = itemCache.getValue(throwableEntity);
+                Float value = ((IExtraDamage)throwableEntity).getExtraDamage();
                 if (value!=null){
                     event.setAmount(event.getAmount() + value);
-                    itemCache.removeValue(throwableEntity);
 //                    Logger.info("额外增加伤害："+value);
                 }
             }

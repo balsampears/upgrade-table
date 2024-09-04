@@ -1,11 +1,8 @@
-package com.balsam.upgradetable.mixin;
+package com.balsam.upgradetable.mixin.target;
 
-import com.balsam.upgradetable.cache.BowDamageCache;
-import com.balsam.upgradetable.cache.CacheFactory;
-import com.balsam.upgradetable.cache.ItemCache;
-import com.balsam.upgradetable.cache.ThrowDamageCache;
 import com.balsam.upgradetable.capability.itemAbility.BaseItemAbility;
 import com.balsam.upgradetable.config.AttributeEnum;
+import com.balsam.upgradetable.mixin.interfaces.IExtraDamage;
 import com.balsam.upgradetable.mod.ModCapability;
 import com.balsam.upgradetable.util.ItemStackUtil;
 import net.minecraft.entity.Entity;
@@ -17,10 +14,10 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import javax.annotation.Nullable;
-
 @Mixin(ProjectileEntity.class)
-public class MixinProjectileEntity {
+public class MixinProjectileEntity implements IExtraDamage {
+
+    private Float extraDamage;
 
     /**
      * 实现功能：额外弓箭伤害、额外投射伤害
@@ -35,15 +32,17 @@ public class MixinProjectileEntity {
             BaseItemAbility baseItemAbility = (BaseItemAbility) o;
             //弓箭伤害
             baseItemAbility.findAttribute(AttributeEnum.BOW_DAMAGE).ifPresent(attr->{
-                BowDamageCache itemCache = (BowDamageCache)CacheFactory.Map.get(AttributeEnum.BOW_DAMAGE);
-                itemCache.setValue(thisObj, attr.getValue());
+                extraDamage = attr.getValue();
             });
             //投射伤害
             baseItemAbility.findAttribute(AttributeEnum.THROW_DAMAGE).ifPresent(attr->{
-                ThrowDamageCache cache = (ThrowDamageCache) CacheFactory.Map.get(AttributeEnum.THROW_DAMAGE);
-                cache.setValue(thisObj, attr.getValue());
+                extraDamage = attr.getValue();
             });
         });
     }
 
+    @Override
+    public Float getExtraDamage() {
+        return this.extraDamage;
+    }
 }
