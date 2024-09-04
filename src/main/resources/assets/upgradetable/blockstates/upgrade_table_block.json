@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "upgradetable:block/upgrade_table_block_model",
+      "y": 270
+    },
+    "facing=north": {
+      "model": "upgradetable:block/upgrade_table_block_model",
+      "y": 180
+    },
+    "facing=south": {
+      "model": "upgradetable:block/upgrade_table_block_model"
+    },
+    "facing=west": {
+      "model": "upgradetable:block/upgrade_table_block_model",
+      "y": 90
+    }
+  }
+}

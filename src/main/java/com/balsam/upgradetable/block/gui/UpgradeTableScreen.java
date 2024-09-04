@@ -27,7 +27,7 @@ import java.util.Map;
 
 
 public class UpgradeTableScreen extends ContainerScreen<UpgradeTableContainer> {
-    private static final ResourceLocation BACKGROUND_RESOURCE = new ResourceLocation(Constants.MOD_ID, "textures/gui/upgradetable.png");
+    private static final ResourceLocation BACKGROUND_RESOURCE = new ResourceLocation(Constants.MOD_ID, "textures/gui/upgrade_table_block.png");
     private static final int TEXTURE_WIDTH = 190;
     private static final int TEXTURE_HEIGHT = 166;
     private List<Button> upgradeButtons;
