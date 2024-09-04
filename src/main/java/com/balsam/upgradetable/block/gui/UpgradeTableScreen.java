@@ -28,7 +28,7 @@ import java.util.Map;
 
 public class UpgradeTableScreen extends ContainerScreen<UpgradeTableContainer> {
     private static final ResourceLocation BACKGROUND_RESOURCE = new ResourceLocation(Constants.MOD_ID, "textures/gui/upgradetable.png");
-    private static final int TEXTURE_WIDTH = 176;
+    private static final int TEXTURE_WIDTH = 190;
     private static final int TEXTURE_HEIGHT = 166;
     private List<Button> upgradeButtons;
 
@@ -45,7 +45,7 @@ public class UpgradeTableScreen extends ContainerScreen<UpgradeTableContainer> {
         //最多渲染4个按钮
         //渲染组件，坐标从上面方法的x,y开始算
         for (int i = 0; i < 4; i++) {
-            Button button = new Button(this.leftPos + 152, this.topPos + 25 + i * 10, 20, 12,
+            Button button = new Button(this.leftPos + 165, this.topPos + 25 + i * 10, 20, 12,
                     new TranslationTextComponent(String.format("button.%s.upgrade", Constants.MOD_ID)), new UpgradeTableButton(this, i));
             this.buttons.add(button);
             this.upgradeButtons.add(button);
@@ -97,7 +97,7 @@ public class UpgradeTableScreen extends ContainerScreen<UpgradeTableContainer> {
                         }
                     }
                     //渲染文本
-                    this.font.draw(matrixStack, textComponent, (this.leftPos + 39) / fontScale, (this.topPos + 17 + 10 * i) / fontScale, Color.BLACK.getRGB());
+                    this.font.draw(matrixStack, textComponent, (this.leftPos + 38) / fontScale, (this.topPos + 17 + 10 * i) / fontScale, Color.BLACK.getRGB());
 
                 }
 

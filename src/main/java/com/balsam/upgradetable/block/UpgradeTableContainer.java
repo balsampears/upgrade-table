@@ -18,16 +18,16 @@ public class UpgradeTableContainer extends Container {
         //玩家物品栏
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 9; j++) {
-                this.addSlot(new Slot(playerInventory, 9 + i * 9 + j, 8 + j * 18, 84 + i * 18));
+                this.addSlot(new Slot(playerInventory, 9 + i * 9 + j, 15 + j * 18, 84 + i * 18));
             }
         }
         for (int i = 0; i < 9; i++) {
-            this.addSlot(new Slot(playerInventory, i, 8 + i * 18, 142));
+            this.addSlot(new Slot(playerInventory, i, 15 + i * 18, 142));
         }
         //方块物品栏
         blockEntity = (UpgradeTableTileEntity) world.getBlockEntity(blockPos);
-        this.addSlot(new Slot(blockEntity.getInventory(), 0, 13, 20));
-        this.addSlot(new Slot(blockEntity.getInventory(), 1, 13, 50));
+        this.addSlot(new Slot(blockEntity.getInventory(), 0, 11, 20));
+        this.addSlot(new Slot(blockEntity.getInventory(), 1, 11, 50));
     }
 
 
