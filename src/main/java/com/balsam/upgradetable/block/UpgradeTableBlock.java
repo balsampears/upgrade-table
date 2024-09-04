@@ -5,6 +5,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.item.ItemTier;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Hand;
@@ -22,7 +23,8 @@ public class UpgradeTableBlock extends Block {
         super(Properties.of(Material.STONE)
                 .requiresCorrectToolForDrops()
                 .strength(3f, 6f)
-                .harvestTool(ToolType.PICKAXE));
+                .harvestTool(ToolType.PICKAXE)
+                .harvestLevel(ItemTier.IRON.getLevel()));
     }
 
     @Override

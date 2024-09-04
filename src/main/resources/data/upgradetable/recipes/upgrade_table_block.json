@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "###",
+    " $ ",
+    " @ "
+  ],
+  "key": {
+    "#": {
+      "item": "minecraft:wooden_sword"
+    },
+    "$": {
+      "item": "minecraft:anvil"
+    },
+    "@": {
+      "item": "minecraft:crafting_table"
+    }
+  },
+  "result": {
+    "item": "upgradetable:upgrade_table_block"
+  }
+}

@@ -1,4 +1,14 @@
 {
+  "block.upgradetable.upgrade_table_block": "Upgrade Table",
   "gui.upgradetable.upgradetable": "Upgrade Table",
-  "button.upgradetable.upgrade": "Up"
+  "button.upgradetable.upgrade": "Up",
+  "attribute.name.upgrade.total": "Total Level",
+  "attribute.name.upgrade.attack_damage": "Attack Damage",
+  "attribute.name.upgrade.attack_speed": "Attack Speed",
+  "attribute.name.upgrade.max_duration": "Durability",
+  "attribute.name.upgrade.bow_damage": "Bow Damage",
+  "attribute.name.upgrade.bow_arc_time": "Reduce DrawTime",
+  "attribute.name.upgrade.ammo_cost": "Reduce AmmoCost",
+  "attribute.name.upgrade.throw_damage": "Throw Damage",
+  "attribute.name.upgrade.use_cooldown": "Reduce Cooldown"
 }
