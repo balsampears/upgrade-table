@@ -4,6 +4,7 @@
   "compatibilityLevel": "JAVA_8",
   "refmap": "mixins.upgradetable.refmap.json",
   "mixins": [
+    "MixinAttributeModifier",
     "MixinCooldownTracker",
     "MixinItemStack",
     "MixinLivingEntity",
