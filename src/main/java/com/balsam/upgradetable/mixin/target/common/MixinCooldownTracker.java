@@ -1,21 +1,13 @@
-package com.balsam.upgradetable.mixin.target;
+package com.balsam.upgradetable.mixin.target.common;
 
 import com.balsam.upgradetable.capability.itemAbility.BaseItemAbility;
-import com.balsam.upgradetable.capability.itemAbility.IItemAbility;
-import com.balsam.upgradetable.capability.pojo.ItemAttributePO;
 import com.balsam.upgradetable.config.AttributeEnum;
 import com.balsam.upgradetable.mod.ModCapability;
 import com.balsam.upgradetable.util.ItemStackUtil;
-import com.balsam.upgradetable.util.Logger;
-import com.google.common.collect.Maps;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.network.play.server.SCooldownPacket;
 import net.minecraft.util.CooldownTracker;
 import net.minecraft.util.ServerCooldownTracker;
-import net.minecraftforge.common.util.LazyOptional;
 import org.apache.commons.lang3.RandomUtils;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -24,7 +16,6 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.Map;
-import java.util.Optional;
 
 @Mixin(CooldownTracker.class)
 public abstract class MixinCooldownTracker {

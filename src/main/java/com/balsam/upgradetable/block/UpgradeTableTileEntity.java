@@ -5,6 +5,7 @@ import com.balsam.upgradetable.capability.itemAbility.IItemAbility;
 import com.balsam.upgradetable.capability.pojo.ItemAttributePO;
 import com.balsam.upgradetable.config.AttributeEnum;
 import com.balsam.upgradetable.config.Constants;
+import com.balsam.upgradetable.mixin.interfaces.IItemStack;
 import com.balsam.upgradetable.mod.ModCapability;
 import com.balsam.upgradetable.network.Networking;
 import com.balsam.upgradetable.network.pack.UpgradeButtonPack;
@@ -85,7 +86,6 @@ public class UpgradeTableTileEntity extends TileEntity implements INamedContaine
                 }
             }
             //刷新能力值属性
-            int maxDuration = 0;
             for (ItemAttributePO attribute : baseItemAbility.getDisplayAttributes()) {
                 switch (attribute.getAttributeEnum()) {
                     case ATTACK_DAMAGE:
@@ -123,19 +123,12 @@ public class UpgradeTableTileEntity extends TileEntity implements INamedContaine
                                 EquipmentSlotType.MAINHAND);
                         break;
                     case MAX_DURATION:
-                        maxDuration += attribute.getValue();
                         break;
                 }
-                maxDuration -= attribute.getReduceDuration();
             }
-            //特别处理：耐久度
-            if (maxDuration != 0){
-                ItemStackUtil.addOrUpdateAttributeModifier(itemStack, AttributeRegistry.MaxDuration.get(), new AttributeModifier(
-                                AttributeEnum.MAX_DURATION.getUuid(), "Normal Attribute", maxDuration, AttributeModifier.Operation.ADDITION),
-                        EquipmentSlotType.MAINHAND);
-            } else {
-                ItemStackUtil.removeAttributeModifier(itemStack, AttributeRegistry.MaxDuration.get(), EquipmentSlotType.MAINHAND);
-            }
+            //特别处理耐久度
+            int maxDuration = settingMaxDuration(baseItemAbility);
+            ((IItemStack)(Object)itemStack).setAdditionalMaxDamage(maxDuration);
             //通知客户端更新
             Networking.INSTANCE.send(PacketDistributor.ALL.noArg(), new UpgradeButtonPack(o.serializeNBT(), upgradeItemIndex));
         });
@@ -163,13 +156,28 @@ public class UpgradeTableTileEntity extends TileEntity implements INamedContaine
 
     @OnlyIn(Dist.CLIENT)
     public void syncData(CompoundNBT compoundNBT, int upgradeItemIndex) {
-        ItemStack itemStack = inventory.getItem(1);
+        ItemStack itemStack = inventory.getItem(0);
         if (itemStack.isEmpty()) return;
         itemStack.getCapability(ModCapability.itemAbility).ifPresent(o -> {
             o.deserializeNBT(compoundNBT);
+            int maxDuration = settingMaxDuration((BaseItemAbility)o );
+            ((IItemStack)(Object)itemStack).setAdditionalMaxDamage(maxDuration);
 //            Logger.info(String.format("同步数据：%s", new Gson().toJson(compoundNBT)));
         });
     }
 
+    /**
+     * 设置额外最大耐久度
+     * @param baseItemAbility
+     */
+    public static int settingMaxDuration(BaseItemAbility baseItemAbility) {
+        int maxDuration = 0;
+        for (ItemAttributePO attribute : baseItemAbility.getDisplayAttributes()) {
+            maxDuration -= attribute.getReduceDuration();
+            if (attribute.getAttributeEnum() == AttributeEnum.MAX_DURATION)
+                maxDuration += (int)attribute.getValue();
+        }
+        return maxDuration;
+    }
 
 }

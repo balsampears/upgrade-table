@@ -1,9 +1,9 @@
-package com.balsam.upgradetable.mixin.target;
+package com.balsam.upgradetable.mixin.target.common;
 
 import com.balsam.upgradetable.capability.itemAbility.BaseItemAbility;
 import com.balsam.upgradetable.capability.itemAbility.IItemAbility;
 import com.balsam.upgradetable.config.AttributeEnum;
-import com.balsam.upgradetable.mixin.interfaces.IUsingItemStack;
+import com.balsam.upgradetable.mixin.interfaces.IItemStack;
 import com.balsam.upgradetable.mod.ModCapability;
 import com.balsam.upgradetable.registry.AttributeRegistry;
 import net.minecraft.entity.Entity;
@@ -75,13 +75,13 @@ public abstract class MixinLivingEntity extends Entity {
         PlayerEntity playerEntity = (PlayerEntity) (Object) this;
 
         for (ItemStack item : playerEntity.inventory.items) {
-            ((IUsingItemStack)(Object)item).setUsingPlayer(playerEntity);
+            ((IItemStack)(Object)item).setUsingPlayer(playerEntity);
         }
         for (ItemStack item : playerEntity.inventory.armor) {
-            ((IUsingItemStack)(Object)item).setUsingPlayer(playerEntity);
+            ((IItemStack)(Object)item).setUsingPlayer(playerEntity);
         }
         for (ItemStack item : playerEntity.inventory.offhand) {
-            ((IUsingItemStack)(Object)item).setUsingPlayer(playerEntity);
+            ((IItemStack)(Object)item).setUsingPlayer(playerEntity);
         }
     }
 
@@ -93,13 +93,13 @@ public abstract class MixinLivingEntity extends Entity {
         if (!PlayerEntity.class.isAssignableFrom(this.getClass())) return;
         PlayerEntity playerEntity = (PlayerEntity) (Object) this;
         for (ItemStack item : playerEntity.inventory.items) {
-            ((IUsingItemStack)(Object)item).setUsingPlayer(null);
+            ((IItemStack)(Object)item).setUsingPlayer(null);
         }
         for (ItemStack item : playerEntity.inventory.armor) {
-            ((IUsingItemStack)(Object)item).setUsingPlayer(null);
+            ((IItemStack)(Object)item).setUsingPlayer(null);
         }
         for (ItemStack item : playerEntity.inventory.offhand) {
-            ((IUsingItemStack)(Object)item).setUsingPlayer(null);
+            ((IItemStack)(Object)item).setUsingPlayer(null);
         }
     }
 }

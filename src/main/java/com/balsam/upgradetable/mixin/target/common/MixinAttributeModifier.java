@@ -1,4 +1,4 @@
-package com.balsam.upgradetable.mixin.target;
+package com.balsam.upgradetable.mixin.target.common;
 
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.item.Item;

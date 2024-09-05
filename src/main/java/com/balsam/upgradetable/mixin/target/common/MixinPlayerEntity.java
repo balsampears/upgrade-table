@@ -1,4 +1,4 @@
-package com.balsam.upgradetable.mixin.target;
+package com.balsam.upgradetable.mixin.target.common;
 
 import com.balsam.upgradetable.registry.AttributeRegistry;
 import net.minecraft.entity.EntityType;
