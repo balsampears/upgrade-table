@@ -17,7 +17,6 @@ public class Main {
         BlockRegistry.BLOCKS.register(bus);
         TileEntityTypeRegistry.TILE_ENTITIES.register(bus);
         ContainerTypeRegistry.CONTAINERS.register(bus);
-        AttributeRegistry.ATTRIBUTES.register(bus);
 
         ModLoadingContext.get().registerConfig(net.minecraftforge.fml.config.ModConfig.Type.COMMON, ModConfig.COMMON_CONFIG);
 

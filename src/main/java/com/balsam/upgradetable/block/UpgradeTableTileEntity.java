@@ -9,7 +9,6 @@ import com.balsam.upgradetable.mixin.interfaces.IItemStack;
 import com.balsam.upgradetable.mod.ModCapability;
 import com.balsam.upgradetable.network.Networking;
 import com.balsam.upgradetable.network.pack.UpgradeButtonPack;
-import com.balsam.upgradetable.registry.AttributeRegistry;
 import com.balsam.upgradetable.registry.TileEntityTypeRegistry;
 import com.balsam.upgradetable.util.ItemStackUtil;
 import com.balsam.upgradetable.util.Logger;
@@ -78,54 +77,29 @@ public class UpgradeTableTileEntity extends TileEntity implements INamedContaine
             targetAttribute.upgrade();
             Logger.info(String.format("当前总等级为：%d/%d", baseItemAbility.getTotal().getLevel(), baseItemAbility.getTotal().getMaxLevel()));
             //每次升级，都会刷新全部属性
-            //刷新原版的属性
-            for (EquipmentSlotType slotType : EquipmentSlotType.values()) {
-                Multimap<Attribute, AttributeModifier> attributeModifierMap = itemStack.getItem().getAttributeModifiers(slotType, itemStack);
-                for (Map.Entry<Attribute, AttributeModifier> entry : attributeModifierMap.entries()) {
-                    ItemStackUtil.addOrUpdateAttributeModifier(itemStack, entry.getKey(), entry.getValue(), slotType);
-                }
-            }
-            //刷新能力值属性
-            for (ItemAttributePO attribute : baseItemAbility.getDisplayAttributes()) {
-                switch (attribute.getAttributeEnum()) {
-                    case ATTACK_DAMAGE:
-                        ItemStackUtil.addOrUpdateAttributeModifier(itemStack, AttributeRegistry.AttackDamage.get(), new AttributeModifier(
-                                        AttributeEnum.ATTACK_DAMAGE.getUuid(), "Weapon Attribute", attribute.getValue(), AttributeModifier.Operation.ADDITION),
-                                EquipmentSlotType.MAINHAND);
-                        break;
-                    case ATTACK_SPEED:
-                        ItemStackUtil.addOrUpdateAttributeModifier(itemStack, AttributeRegistry.AttackSpeed.get(), new AttributeModifier(
-                                        AttributeEnum.ATTACK_SPEED.getUuid(), "Weapon Attribute", attribute.getValue(), AttributeModifier.Operation.ADDITION),
-                                EquipmentSlotType.MAINHAND);
-                        break;
-                    case BOW_DAMAGE:
-                        ItemStackUtil.addOrUpdateAttributeModifier(itemStack, AttributeRegistry.BowDamage.get(), new AttributeModifier(
-                                        AttributeEnum.BOW_DAMAGE.getUuid(), "Weapon Attribute", attribute.getValue(), AttributeModifier.Operation.ADDITION),
-                                EquipmentSlotType.MAINHAND);
-                        break;
-                    case BOW_ARC_TIME:
-                        ItemStackUtil.addOrUpdateAttributeModifier(itemStack, AttributeRegistry.BowArcTime.get(), new AttributeModifier(
-                                        AttributeEnum.BOW_ARC_TIME.getUuid(), "Weapon Attribute", attribute.getValue(), AttributeModifier.Operation.MULTIPLY_BASE),
-                                EquipmentSlotType.MAINHAND);
-                        break;
-                    case AMMO_COST:
-                        ItemStackUtil.addOrUpdateAttributeModifier(itemStack, AttributeRegistry.AmmoCost.get(), new AttributeModifier(
-                                        AttributeEnum.AMMO_COST.getUuid(), "Weapon Attribute", attribute.getValue(), AttributeModifier.Operation.MULTIPLY_BASE),
-                                EquipmentSlotType.MAINHAND);
-                        break;
-                    case THROW_DAMAGE:
-                        ItemStackUtil.addOrUpdateAttributeModifier(itemStack, AttributeRegistry.ThrowDamage.get(), new AttributeModifier(
-                                        AttributeEnum.THROW_DAMAGE.getUuid(), "Weapon Attribute", attribute.getValue(), AttributeModifier.Operation.ADDITION),
-                                EquipmentSlotType.MAINHAND);
-                    case USE_COOLDOWN:
-                        ItemStackUtil.addOrUpdateAttributeModifier(itemStack, AttributeRegistry.UseCooldown.get(), new AttributeModifier(
-                                        AttributeEnum.USE_COOLDOWN.getUuid(), "Weapon Attribute", attribute.getValue(), AttributeModifier.Operation.MULTIPLY_BASE),
-                                EquipmentSlotType.MAINHAND);
-                        break;
-                    case MAX_DURATION:
-                        break;
-                }
-            }
+//            //刷新原版的属性
+//            for (EquipmentSlotType slotType : EquipmentSlotType.values()) {
+//                Multimap<Attribute, AttributeModifier> attributeModifierMap = itemStack.getItem().getAttributeModifiers(slotType, itemStack);
+//                for (Map.Entry<Attribute, AttributeModifier> entry : attributeModifierMap.entries()) {
+//                    ItemStackUtil.addOrUpdateAttributeModifier(itemStack, entry.getKey(), entry.getValue(), slotType);
+//                }
+//            }
+//            //刷新能力值属性
+//            for (ItemAttributePO attribute : baseItemAbility.getDisplayAttributes()) {
+//                switch (attribute.getAttributeEnum()) {
+//                    case ATTACK_DAMAGE:
+//                        itemStack.getAttributeModifiers()
+//                        ItemStackUtil.addOrUpdateAttributeModifier(itemStack, AttributeRegistry.AttackDamage.get(), new AttributeModifier(
+//                                        AttributeEnum.ATTACK_DAMAGE.getUuid(), "Weapon Attribute", attribute.getValue(), AttributeModifier.Operation.ADDITION),
+//                                EquipmentSlotType.MAINHAND);
+//                        break;
+//                    case ATTACK_SPEED:
+//                        ItemStackUtil.addOrUpdateAttributeModifier(itemStack, AttributeRegistry.AttackSpeed.get(), new AttributeModifier(
+//                                        AttributeEnum.ATTACK_SPEED.getUuid(), "Weapon Attribute", attribute.getValue(), AttributeModifier.Operation.ADDITION),
+//                                EquipmentSlotType.MAINHAND);
+//                        break;
+//                }
+//            }
             //特别处理耐久度
             int maxDuration = settingMaxDuration(baseItemAbility);
             ((IItemStack)(Object)itemStack).setAdditionalMaxDamage(maxDuration);

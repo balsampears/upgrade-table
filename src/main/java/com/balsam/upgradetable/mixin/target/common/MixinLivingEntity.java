@@ -5,7 +5,6 @@ import com.balsam.upgradetable.capability.itemAbility.IItemAbility;
 import com.balsam.upgradetable.config.AttributeEnum;
 import com.balsam.upgradetable.mixin.interfaces.IItemStack;
 import com.balsam.upgradetable.mod.ModCapability;
-import com.balsam.upgradetable.registry.AttributeRegistry;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
@@ -54,16 +53,16 @@ public abstract class MixinLivingEntity extends Entity {
         });
     }
 
-    /**
-     * 给存活实体添加额外属性，避免报错
-     */
-    @Inject(at = @At("RETURN"), method = "createLivingAttributes()Lnet/minecraft/entity/ai/attributes/AttributeModifierMap$MutableAttribute;", cancellable = true)
-    private static void createLivingAttributes(CallbackInfoReturnable<AttributeModifierMap.MutableAttribute> callback) {
-        AttributeModifierMap.MutableAttribute mutableAttribute = callback.getReturnValue();
-        mutableAttribute.add(AttributeRegistry.AttackDamage.get())
-                .add(AttributeRegistry.AttackSpeed.get());
-        callback.setReturnValue(mutableAttribute);
-    }
+//    /**
+//     * 给存活实体添加额外属性，避免报错
+//     */
+//    @Inject(at = @At("RETURN"), method = "createLivingAttributes()Lnet/minecraft/entity/ai/attributes/AttributeModifierMap$MutableAttribute;", cancellable = true)
+//    private static void createLivingAttributes(CallbackInfoReturnable<AttributeModifierMap.MutableAttribute> callback) {
+//        AttributeModifierMap.MutableAttribute mutableAttribute = callback.getReturnValue();
+//        mutableAttribute.add(AttributeRegistry.AttackDamage.get())
+//                .add(AttributeRegistry.AttackSpeed.get());
+//        callback.setReturnValue(mutableAttribute);
+//    }
 
 
     /**
