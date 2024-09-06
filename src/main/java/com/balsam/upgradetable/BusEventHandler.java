@@ -113,7 +113,7 @@ public class BusEventHandler {
             BaseItemAbility baseItemAbility = (BaseItemAbility) o;
             //从item中获取基础属性
             Multimap<Attribute, AttributeModifier> itemModifierMap = itemStack.getItem().getAttributeModifiers(EquipmentSlotType.MAINHAND, itemStack);
-            for (int i = baseItemAbility.getDisplayAttributes().size() -1;i>=0;i--) {
+            for (int i = 0;i<baseItemAbility.getDisplayAttributes().size();i++) {
                 ItemAttributePO attr = baseItemAbility.getDisplayAttributes().get(i);
                 //攻击伤害
                 if (attr.getAttributeEnum() == AttributeEnum.ATTACK_DAMAGE){

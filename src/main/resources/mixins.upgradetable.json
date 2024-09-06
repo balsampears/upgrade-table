@@ -6,6 +6,7 @@
   "mixins": [
     "common.MixinAttributeModifier",
     "common.MixinCooldownTracker",
+    "common.MixinItemAttributeModifierEvent",
     "common.MixinItemStack",
     "common.MixinLivingEntity",
     "common.MixinPlayerEntity",
