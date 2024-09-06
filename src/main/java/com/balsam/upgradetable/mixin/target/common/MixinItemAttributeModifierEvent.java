@@ -23,7 +23,7 @@ public class MixinItemAttributeModifierEvent {
      * 修复原版没有按顺序设置属性bug
      */
     @Inject(method = "net.minecraftforge.event.ItemAttributeModifierEvent.getModifiableMap",
-            at = @At(value = "INVOKE", shift = At.Shift.AFTER,
+            at = @At(value = "INVOKE", shift = At.Shift.BY, by = 2,
                     target = "Lcom/google/common/collect/HashMultimap;create(Lcom/google/common/collect/Multimap;)Lcom/google/common/collect/HashMultimap;"))
     private void getModifiableMap(CallbackInfoReturnable<Multimap<Attribute, AttributeModifier>> callback){
         this.modifiableModifiers = LinkedHashMultimap.create(this.originalModifiers);

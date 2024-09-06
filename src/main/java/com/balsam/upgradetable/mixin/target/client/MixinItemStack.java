@@ -55,7 +55,7 @@ public abstract class MixinItemStack extends CapabilityProvider<ItemStack> imple
      * 添加总等级提示
      */
     @ModifyArg(method = "getTooltipLines(Lnet/minecraft/entity/player/PlayerEntity;Lnet/minecraft/client/util/ITooltipFlag;)Ljava/util/List;",
-            at = @At(value = "INVOKE", remap = false, ordinal = 0,
+            at = @At(value = "INVOKE", ordinal = 0,
                     target = "net/minecraft/util/text/StringTextComponent.append(Lnet/minecraft/util/text/ITextComponent;)Lnet/minecraft/util/text/IFormattableTextComponent;"))
     private ITextComponent stringTextComponentAppend(ITextComponent textComponent) {
         ItemStack thisObj = (ItemStack) (Object) this;
@@ -83,7 +83,7 @@ public abstract class MixinItemStack extends CapabilityProvider<ItemStack> imple
      * 注入属性栏提示
      */
     @Inject(method = "getTooltipLines(Lnet/minecraft/entity/player/PlayerEntity;Lnet/minecraft/client/util/ITooltipFlag;)Ljava/util/List;",
-            at = @At(value = "INVOKE", remap = false, shift = At.Shift.BEFORE, ordinal = 1,
+            at = @At(value = "INVOKE", shift = At.Shift.BEFORE, ordinal = 1,
                     target = "Lnet/minecraft/item/ItemStack;hasTag()Z"),
             locals = LocalCapture.CAPTURE_FAILSOFT)
     private void getTooltipLines(PlayerEntity playerEntity, ITooltipFlag p_82840_2_, CallbackInfoReturnable<List<ITextComponent>> cir, List<ITextComponent> list) {
